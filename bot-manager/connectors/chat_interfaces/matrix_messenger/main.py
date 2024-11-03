@@ -1,7 +1,8 @@
 from typing import Dict, List, Optional, Union
 
-from nio import (
+from nio import (  # type: ignore
     AsyncClient,
+    Event,
     MatrixRoom,
     RoomGetStateError,
     RoomGetStateResponse,
@@ -9,7 +10,15 @@ from nio import (
 )
 
 from app.lib.bot_manager import BotManager
-from app.lib.connector_base import ConnectorBase
+from app.lib.connectors.connector_base import ConnectorBase
+from app.lib.messaging.message_received import ReceiveChatMessage
+from app.lib.messaging.message_send import (
+    SendChatMessageResponse,
+    SendMessageType,
+)
+from app.lib.messaging.room import ChatRoom
+from app.lib.messaging.room_users import ChatRoomUsers
+from app.lib.messaging.rooms import ChatRooms
 
 # Matrix client settings
 matrix_user: str = "freaque"
@@ -35,53 +44,90 @@ class RoomInfo:
 
 
 class Connector(ConnectorBase):
-    def __init__(self, bot: BotManager) -> None:
-        self.bot: BotManager = bot
+    def __init__(self, bot: BotManager, connector_name: str) -> None:
+        super().__init__(bot, connector_name)
         self.client: AsyncClient = AsyncClient(matrix_homeserver, matrix_user)
         self.rooms: Dict[str, Dict[str, List[MessageContent] | RoomInfo]] = {}
-        self.sent_messages: List[Dict[str, str | Optional[str]]] = (
-            []
-        )  # Track sent messages with room_id and content
+        self.sent_messages: List[Dict[str, str | Optional[str]]] = []
 
-    # Start the Matrix bot in a separate thread
-    async def listen(self) -> None:
+    async def get_users(self, room_id: str) -> ChatRoomUsers:
+        room: ChatRoom = await self.get_room_history(room_id)
+        return ChatRoomUsers(room_users=room.get_users())
 
-        await self.start_matrix_client()
+    async def on_startup(self) -> None:
+        self.logger.info("Starting Matrix Client")
+        await self.client.login(matrix_password)
+        await self.get_rooms_list()
 
-    # Define the Matrix event handler for new messages
-    async def room_message_callback(
-        self, room: MatrixRoom, event: RoomMessageText
-    ) -> None:
-        sender: str = event.sender
-        message: str = event.body
-        room_id: str = room.room_id
+        self.client.add_event_callback(
+            self._room_message_callback, RoomMessageText
+        )
+
+        # Start the sync loop to keep the client active and responsive
+        await self.client.sync_forever(
+            timeout=30000
+        )  # Sync timeout in milliseconds
+        self.logger.info("Started Matrix Client")
+
+    async def send_message(
+        self, message: str, room_id: str, user_id: str | None
+    ) -> SendChatMessageResponse:
+        # Send message and store all data about the message and its status
+        response = await self.client.room_send(
+            room_id=room_id,
+            message_type="m.room.message",
+            content={
+                "msgtype": SendMessageType.TEXT.value,
+                "body": message,
+            },
+        )
+        return SendChatMessageResponse(
+            success=response.status_code == 200, error=response.message
+        )
+
+    def _room_message_callback(self, room: MatrixRoom, event: Event) -> None:
+        # sender: str = event.sender
+        # message: str = event.body
+        # room_id: str = room.room_id
+        _room: ChatRoom = ChatRoom(
+            name=room.display_name,
+            room_id=room.room_id,
+        )
+        message: ReceiveChatMessage = ReceiveChatMessage(
+            sender_id=event.sender_key or "TODOOO",
+            sender_name=event.sender,
+            message="TODO",
+        )
         # Forward the message to the connector manager
-        await self.bot.new_message_callback(room, event)
+        self.bot.execute_new_message_callback(_room, message)
 
-    # Initialize all rooms on startup
-    async def init_rooms(self) -> None:
+    async def get_rooms_list(self) -> ChatRooms:
         joined_rooms = await self.client.joined_rooms()
         for room_id in joined_rooms.rooms:
             await self.init_room(room_id)
+        return ChatRooms()
 
-    async def init_room(self, room_id: str) -> None:
+    async def get_room_history(
+        self, room_id: str, start: int, to: int
+    ) -> ChatRoom:
         # Initialize room details and load messages if necessary
-        room_info: RoomInfo = await self.fetch_room_info(room_id)
-        room_messages: List[MessageContent] = await self.fetch_room_messages(
+        room_info: RoomInfo = await self._fetch_room_info(room_id)
+        room_messages: List[MessageContent] = await self._fetch_room_messages(
             room_id
         )
         self.rooms[room_id] = {
             "info": room_info,
             "messages": room_messages,
         }
+        return ChatRoom()
 
-    async def fetch_room_info(self, room_id: str) -> RoomInfo:
+    async def _fetch_room_info(self, room_id: str) -> RoomInfo:
         # Fetch room information such as room name and topic
         room = await self.client.room_get_state(room_id)
         room_info: RoomInfo = RoomInfo(name=room.room_id, room=room)
         return room_info
 
-    async def fetch_room_messages(self, room_id: str) -> List[MessageContent]:
+    async def _fetch_room_messages(self, room_id: str) -> List[MessageContent]:
         # Fetch historical messages (last few messages for reference)
         messages: List[MessageContent] = []
         response = await self.client.room_messages(room_id, limit=10)
@@ -92,49 +138,3 @@ class Connector(ConnectorBase):
                         {"sender": event.sender, "content": event.body}
                     )
         return messages
-
-    # Send a message to the Matrix room through the Matrix client
-    async def send_matrix_message(
-        self, message_content: str, room_id: str, msg_type: str = "m.text"
-    ) -> Optional[Dict[str, str]]:
-        # Send message and store all data about the message and its status
-        response = await self.client.room_send(
-            room_id=room_id,
-            message_type="m.room.message",
-            content={
-                "msgtype": msg_type,
-                "body": message_content,
-            },
-        )
-        message_info: Dict[str, str] = {
-            "room_id": room_id,
-            "content": message_content,
-            "event_id": (
-                response.event_id if response and response.event_id else ""
-            ),
-        }
-        self.sent_messages.append(message_info)
-        return message_info
-
-    # Setup and run the Matrix client
-    async def start_matrix_client(self) -> None:
-        # Log into the Matrix client
-        await self.client.login(matrix_password)
-
-        # Initialize rooms and set up the event callback
-        await self.init_rooms()
-
-        # Register the new message callback to handle incoming messages
-        self.client.add_event_callback(
-            self.room_message_callback, RoomMessageText
-        )
-
-        # Start the sync loop to keep the client active and responsive
-        await self.client.sync_forever(
-            timeout=30000
-        )  # Sync timeout in milliseconds
-
-    # Placeholder method to illustrate room fetching with strict typing
-    async def fetch_all_rooms(self) -> List[str]:
-        # Fetch list of room IDs from the Matrix server
-        return ["!roomid1:matrix.org", "!roomid2:matrix.org"]

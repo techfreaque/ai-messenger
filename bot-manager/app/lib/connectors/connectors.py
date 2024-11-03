@@ -4,7 +4,7 @@ import os
 from types import ModuleType
 from typing import TYPE_CHECKING, List, Optional
 
-from app.lib.connector_base import ConnectorBase
+from app.lib.connectors.connector_base import ConnectorBase
 from app.lib.logger import setup_logger
 
 if TYPE_CHECKING:
@@ -16,8 +16,6 @@ class ConnectorManager:
         self.logger = setup_logger(
             "ConnectorManager",
             logging.DEBUG,
-            max_bytes=2 * 1024 * 1024,
-            backup_count=1,
         )
         self.connector_types: List[str] = self.discover_connector_types()
         self.connectors: dict[str, ConnectorBase] = {}
@@ -28,7 +26,7 @@ class ConnectorManager:
         Discover all available connector types by listing subdirectories in the 'connectors' directory.
         """
         connectors_base_dir: str = os.path.abspath(
-            os.path.join(os.path.dirname(__file__), "../../connectors")
+            os.path.join(os.path.dirname(__file__), "../../../connectors")
         )
         connector_types: List[str] = []
 
@@ -70,7 +68,7 @@ class ConnectorManager:
         Load connectors from specified types ('ui', 'chat', or any other discovered type).
         """
         connectors_base_dir: str = os.path.abspath(
-            os.path.join(os.path.dirname(__file__), "../../connectors")
+            os.path.join(os.path.dirname(__file__), "../../../connectors")
         )
 
         # Loop through each specified connector type
@@ -94,7 +92,9 @@ class ConnectorManager:
                         connector_class = getattr(module, "Connector", None)
                         try:
                             if connector_class:
-                                connector_instance = connector_class(bot)
+                                connector_instance = connector_class(
+                                    bot, connector_name
+                                )
                                 if isinstance(
                                     connector_instance, ConnectorBase
                                 ):
@@ -125,7 +125,7 @@ class ConnectorManager:
 
     def is_overridden(self, subclass: ConnectorBase, method_name: str) -> bool:
         subclass_method = getattr(subclass, method_name, None)
-        base_instance = ConnectorBase(None)  # type: ignore
+        base_instance = ConnectorBase(None, "none")  # type: ignore
         parent_method = getattr(base_instance, method_name, None)
         if not subclass_method or not parent_method:
             return False  # Method does not exist in one of the classes

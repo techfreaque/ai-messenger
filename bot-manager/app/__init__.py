@@ -1,2 +1,2 @@
-from .lib import BotManager, ConnectorBase, Storage
-from .main import main
+from .lib import *
+from .main import *
