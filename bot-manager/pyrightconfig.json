@@ -1,0 +1,10 @@
+{
+    "typeCheckingMode": "strict",
+    "reportMissingTypeStubs": true,
+    "reportMissingImports": true,
+    "reportOptionalSubscript": true,
+    "reportOptionalMemberAccess": true,
+    "reportPrivateUsage": true,
+    "reportUnusedVariable": true
+  }
+  

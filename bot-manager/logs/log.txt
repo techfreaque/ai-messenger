@@ -1,0 +1,579 @@
+2024-11-03 10:47:16 - BotManager - INFO - Loading connectors of types: bots, chat_interfaces, user_interfaces
+2024-11-03 10:47:17 - BotManager - INFO - Loaded connector: open_ai from bots
+2024-11-03 10:47:17 - BotManager - INFO - Loaded connector: matrix_messenger from chat_interfaces
+2024-11-03 10:47:17 - BotManager - INFO - Loaded connector: web_api from user_interfaces
+2024-11-03 10:47:17 - BotManager - INFO - Started loading bot config and memory
+2024-11-03 10:47:17 - BotManager - INFO - Config loaded successfully from E:\code\colabGPT\bot-manager\config.json
+2024-11-03 10:47:17 - BotManager - INFO - Bot memory loaded successfully from E:\code\colabGPT\bot-manager\bot_memory.json
+2024-11-03 10:47:17 - BotManager - INFO - Done loading bot config and memory
+2024-11-03 10:47:17 - BotManager - INFO - Config stored successfully to E:\code\colabGPT\bot-manager\config.json
+2024-11-03 10:47:17 - BotManager - INFO - Bot memory stored successfully to E:\code\colabGPT\bot-manager\bot_memory.json
+2024-11-03 10:47:17 - BotManager - INFO - Starting api connector user_interfaces_web_api...
+2024-11-03 10:47:17 - BotManager - INFO - Started api connector user_interfaces_web_api...
+2024-11-03 10:47:17 - BotManager - INFO - Starting bot connector bots_open_ai...
+2024-11-03 10:47:17 - BotManager - INFO - Started bot connector bots_open_ai...
+2024-11-03 10:47:17 - BotManager - INFO - Starting wakeup scheduler...
+2024-11-03 10:47:17 - BotManager - INFO - Started wakeup_scheduler...
+2024-11-03 10:47:17 - BotManager - INFO - No wakeup ready to schedule will schedule on 1730713637
+2024-11-03 10:47:48 - BotManager - INFO - Loading connectors of types: bots, chat_interfaces, user_interfaces
+2024-11-03 10:47:48 - BotManager - INFO - Loaded connector: open_ai from bots
+2024-11-03 10:47:48 - BotManager - INFO - Loaded connector: matrix_messenger from chat_interfaces
+2024-11-03 10:47:48 - BotManager - INFO - Loaded connector: web_api from user_interfaces
+2024-11-03 10:47:48 - BotManager - INFO - Started loading bot config and memory
+2024-11-03 10:47:48 - BotManager - INFO - Config loaded successfully from E:\code\colabGPT\bot-manager\config.json
+2024-11-03 10:47:48 - BotManager - INFO - Bot memory loaded successfully from E:\code\colabGPT\bot-manager\bot_memory.json
+2024-11-03 10:47:48 - BotManager - INFO - Done loading bot config and memory
+2024-11-03 10:47:48 - BotManager - INFO - Config stored successfully to E:\code\colabGPT\bot-manager\config.json
+2024-11-03 10:47:48 - BotManager - INFO - Bot memory stored successfully to E:\code\colabGPT\bot-manager\bot_memory.json
+2024-11-03 10:47:48 - BotManager - INFO - Starting api connector user_interfaces_web_api...
+2024-11-03 10:47:48 - BotManager - INFO - Started api connector user_interfaces_web_api...
+2024-11-03 10:47:48 - BotManager - INFO - Starting bot connector bots_open_ai...
+2024-11-03 10:47:48 - BotManager - INFO - Started bot connector bots_open_ai...
+2024-11-03 10:47:48 - BotManager - INFO - Starting wakeup scheduler...
+2024-11-03 10:47:48 - BotManager - INFO - Started wakeup_scheduler...
+2024-11-03 10:47:48 - BotManager - INFO - message to model: 
+            You are an AI assistant in a messaging app with a dynamic number of participants, including both humans and bots.
+            Below are your available commands and guidelines for managing conversations effectively.
+
+            
+            
+
+            Commands
+
+                Important: Use only these commands and adhere to the correct syntax in every response. Please read each command's requirements carefully.
+
+                help() — Displays this guide.
+                set_my_name(name: string) — Assigns a unique and entertaining name for yourself as your first command (e.g., "ChatMaster3000"). This command can only be used once at the start.
+                get_my_name() — Retrieves your assigned name if forgotten.
+                timeout(seconds: number) — Pauses activity for a specified duration and automatically resumes with a "wake up" message.
+                send_message(message: string, receiver_user_id?: string, receiver_room_id?: string) — Sends a message to a user or group. At least one of receiver_user_id or receiver_room_id must be specified.
+                request_rooms_list() — Retrieves a list of rooms and their details (title, members).
+                request_room_history(room_id: string, from: date, to: date) — Accesses past messages for a specified room and date range.
+                store_mind_map(text: string) — Saves important points, reminders about your role or key information for easy reference; memory starts empty.
+                store_summary(interval: string, start_time, summary: string) — Stores summaries at regular intervals (e.g., "daily," "weekly") to manage extensive histories.
+                get_mind_map() — Retrieves your mind map for reminders about your role or key information.
+                get_summary(start_time, interval: string) — Retrieves a previously saved summary based on an interval (e.g., "daily," "weekly").
+                get_users(room_id: string) — Lists current chat members with their usernames and IDs.
+
+            Guidelines
+
+                Use send_message() for All Responses — Always respond using send_message(), specifying either receiver_user_id or receiver_room_id as necessary.
+                Set Timeouts as Needed — Use timeout() to introduce delays if required, preventing indefinite waits for responses.
+                Summarize Regularly — Utilize store_summary() or store_mind_map() to save key points and maintain context during longer conversations.
+                Track Follow-ups — Use a method to highlight important messages for follow-up tasks.
+                Monitor Engagement — Keep track of user activity and prompt quieter participants to engage as necessary.
+
+            Reminder: Start by setting your name with set_my_name().
+
+        
+2024-11-03 10:47:48 - BotManager - INFO - No wakeup ready to schedule will schedule on 1730713668
+2024-11-03 10:48:49 - BotManager - INFO - No wakeup ready to schedule will schedule on 1730713668
+2024-11-03 10:49:49 - BotManager - INFO - No wakeup ready to schedule will schedule on 1730713668
+2024-11-03 10:50:49 - BotManager - INFO - No wakeup ready to schedule will schedule on 1730713668
+2024-11-03 10:51:49 - BotManager - INFO - No wakeup ready to schedule will schedule on 1730713668
+2024-11-03 10:53:17 - BotManager - INFO - Loading connectors of types: bots, chat_interfaces, user_interfaces
+2024-11-03 10:53:18 - BotManager - INFO - Loaded connector: open_ai from bots
+2024-11-03 10:53:18 - BotManager - INFO - Loaded connector: matrix_messenger from chat_interfaces
+2024-11-03 10:53:18 - BotManager - INFO - Loaded connector: web_api from user_interfaces
+2024-11-03 10:53:18 - BotManager - INFO - Started loading bot config and memory
+2024-11-03 10:53:18 - BotManager - INFO - Config loaded successfully from E:\code\colabGPT\bot-manager\config.json
+2024-11-03 10:53:18 - BotManager - INFO - Bot memory loaded successfully from E:\code\colabGPT\bot-manager\bot_memory.json
+2024-11-03 10:53:18 - BotManager - INFO - Done loading bot config and memory
+2024-11-03 10:53:18 - BotManager - INFO - Config stored successfully to E:\code\colabGPT\bot-manager\config.json
+2024-11-03 10:53:18 - BotManager - INFO - Bot memory stored successfully to E:\code\colabGPT\bot-manager\bot_memory.json
+2024-11-03 10:53:18 - BotManager - INFO - Starting api connector user_interfaces_web_api...
+2024-11-03 10:53:18 - BotManager - INFO - Started api connector user_interfaces_web_api...
+2024-11-03 10:53:18 - BotManager - INFO - Starting bot connector bots_open_ai...
+2024-11-03 10:53:18 - BotManager - INFO - Started bot connector bots_open_ai...
+2024-11-03 10:53:18 - BotManager - INFO - Starting wakeup scheduler...
+2024-11-03 10:53:18 - BotManager - INFO - message to model: 
+            You are an AI assistant in a messaging app with a dynamic number of participants, including both humans and bots.
+            Below are your available commands and guidelines for managing conversations effectively.
+
+            
+            
+
+            Commands
+
+                Important: Use only these commands and adhere to the correct syntax in every response. Please read each command's requirements carefully.
+
+                help() — Displays this guide.
+                set_my_name(name: string) — Assigns a unique and entertaining name for yourself as your first command (e.g., "ChatMaster3000"). This command can only be used once at the start.
+                get_my_name() — Retrieves your assigned name if forgotten.
+                timeout(seconds: number) — Pauses activity for a specified duration and automatically resumes with a "wake up" message.
+                send_message(message: string, receiver_user_id?: string, receiver_room_id?: string) — Sends a message to a user or group. At least one of receiver_user_id or receiver_room_id must be specified.
+                request_rooms_list() — Retrieves a list of rooms and their details (title, members).
+                request_room_history(room_id: string, from: date, to: date) — Accesses past messages for a specified room and date range.
+                store_mind_map(text: string) — Saves important points, reminders about your role or key information for easy reference; memory starts empty.
+                store_summary(interval: string, start_time, summary: string) — Stores summaries at regular intervals (e.g., "daily," "weekly") to manage extensive histories.
+                get_mind_map() — Retrieves your mind map for reminders about your role or key information.
+                get_summary(start_time, interval: string) — Retrieves a previously saved summary based on an interval (e.g., "daily," "weekly").
+                get_users(room_id: string) — Lists current chat members with their usernames and IDs.
+
+            Guidelines
+
+                Use send_message() for All Responses — Always respond using send_message(), specifying either receiver_user_id or receiver_room_id as necessary.
+                Set Timeouts as Needed — Use timeout() to introduce delays if required, preventing indefinite waits for responses.
+                Summarize Regularly — Utilize store_summary() or store_mind_map() to save key points and maintain context during longer conversations.
+                Track Follow-ups — Use a method to highlight important messages for follow-up tasks.
+                Monitor Engagement — Keep track of user activity and prompt quieter participants to engage as necessary.
+
+            Reminder: Start by setting your name with set_my_name().
+
+        
+2024-11-03 10:53:18 - BotManager - INFO - Started wakeup_scheduler...
+2024-11-03 10:53:18 - BotManager - INFO - No wakeup ready to schedule will schedule on 1730713998
+2024-11-03 11:25:13 - BotManager - INFO - Loading connectors of types: bots, chat_interfaces, user_interfaces
+2024-11-03 11:25:14 - BotManager - INFO - Loaded connector: open_ai from bots
+2024-11-03 11:25:14 - BotManager - INFO - Loaded connector: matrix_messenger from chat_interfaces
+2024-11-03 11:25:14 - BotManager - INFO - Loaded connector: web_api from user_interfaces
+2024-11-03 11:25:14 - BotManager - INFO - Started loading bot config and memory
+2024-11-03 11:25:14 - BotManager - INFO - Config loaded successfully from E:\code\colabGPT\bot-manager\config.json
+2024-11-03 11:25:14 - BotManager - INFO - Bot memory loaded successfully from E:\code\colabGPT\bot-manager\bot_memory.json
+2024-11-03 11:25:14 - BotManager - INFO - Done loading bot config and memory
+2024-11-03 11:25:14 - BotManager - INFO - Config stored successfully to E:\code\colabGPT\bot-manager\config.json
+2024-11-03 11:25:14 - BotManager - INFO - Bot memory stored successfully to E:\code\colabGPT\bot-manager\bot_memory.json
+2024-11-03 11:25:14 - BotManager - INFO - Starting api connector user_interfaces_web_api...
+2024-11-03 11:25:14 - BotManager - INFO - Started api connector user_interfaces_web_api...
+2024-11-03 11:25:14 - BotManager - INFO - Starting bot connector bots_open_ai...
+2024-11-03 11:25:14 - BotManager - INFO - Started bot connector bots_open_ai...
+2024-11-03 11:25:14 - BotManager - INFO - Starting wakeup scheduler...
+2024-11-03 11:25:14 - BotManager - INFO - Started wakeup_scheduler...
+2024-11-03 11:25:14 - BotManager - INFO - Config stored successfully to E:\code\colabGPT\bot-manager\config.json
+2024-11-03 11:25:14 - BotManager - INFO - No wakeup ready to schedule will schedule on 1730715914
+2024-11-03 11:25:14 - BotManager - INFO - Bot memory stored successfully to E:\code\colabGPT\bot-manager\bot_memory.json
+2024-11-03 11:26:14 - BotManager - INFO - No wakeup ready to schedule will schedule on 1730715914
+2024-11-03 11:27:14 - BotManager - INFO - No wakeup ready to schedule will schedule on 1730715914
+2024-11-03 11:28:14 - BotManager - INFO - No wakeup ready to schedule will schedule on 1730715914
+2024-11-03 11:29:14 - BotManager - INFO - No wakeup ready to schedule will schedule on 1730715914
+2024-11-03 11:30:14 - BotManager - INFO - No wakeup ready to schedule will schedule on 1730715914
+2024-11-03 11:31:14 - BotManager - INFO - No wakeup ready to schedule will schedule on 1730715914
+2024-11-03 11:32:14 - BotManager - INFO - No wakeup ready to schedule will schedule on 1730715914
+2024-11-03 11:33:14 - BotManager - INFO - No wakeup ready to schedule will schedule on 1730715914
+2024-11-03 11:34:14 - BotManager - INFO - No wakeup ready to schedule will schedule on 1730715914
+2024-11-03 11:35:14 - BotManager - INFO - No wakeup ready to schedule will schedule on 1730715914
+2024-11-03 11:36:14 - BotManager - INFO - No wakeup ready to schedule will schedule on 1730715914
+2024-11-03 11:36:55 - BotManager - INFO - Loading connectors of types: bots, chat_interfaces, user_interfaces
+2024-11-03 11:36:56 - BotManager - INFO - Loaded connector: open_ai from bots
+2024-11-03 11:36:56 - BotManager - INFO - Loaded connector: matrix_messenger from chat_interfaces
+2024-11-03 11:36:56 - BotManager - INFO - Loaded connector: web_api from user_interfaces
+2024-11-03 11:36:56 - BotManager - INFO - Started loading bot config and memory
+2024-11-03 11:36:56 - BotManager - INFO - Config loaded successfully from E:\code\colabGPT\bot-manager\config.json
+2024-11-03 11:36:56 - BotManager - ERROR - Failed to read bot config and memory: PeriodicSummary.__init__() got an unexpected keyword argument 'role'
+Traceback (most recent call last):
+  File "E:\code\colabGPT\bot-manager\app\lib\storage.py", line 211, in load_data
+    self._load_memory()
+    ~~~~~~~~~~~~~~~~~^^
+  File "E:\code\colabGPT\bot-manager\app\lib\storage.py", line 266, in _load_memory
+    self.bot_memory = BotMemory.from_dict(memory_data)
+                      ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "E:\code\colabGPT\bot-manager\app\lib\storage.py", line 95, in from_dict
+    periodic_summaries[timestamp] = ModelMessage.from_dict(message)
+                                    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "E:\code\colabGPT\bot-manager\app\lib\storage.py", line 49, in from_dict
+    return PeriodicSummary(
+        role=data.get("role", "undefined"),
+        content=data.get("content", "undefined"),
+    )
+TypeError: PeriodicSummary.__init__() got an unexpected keyword argument 'role'
+2024-11-03 11:36:56 - BotManager - INFO - Config stored successfully to E:\code\colabGPT\bot-manager\config.json
+2024-11-03 11:36:56 - BotManager - ERROR - Failed store bot config and memory: bot_memory is not loaded and cannot be stored.
+Traceback (most recent call last):
+  File "E:\code\colabGPT\bot-manager\app\lib\storage.py", line 220, in store_data
+    self._store_memory()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "E:\code\colabGPT\bot-manager\app\lib\storage.py", line 276, in _store_memory
+    raise ValueError("bot_memory is not loaded and cannot be stored.")
+ValueError: bot_memory is not loaded and cannot be stored.
+2024-11-03 11:36:56 - BotManager - INFO - Starting api connector user_interfaces_web_api...
+2024-11-03 11:36:56 - BotManager - INFO - Started api connector user_interfaces_web_api...
+2024-11-03 11:36:56 - BotManager - INFO - Starting bot connector bots_open_ai...
+2024-11-03 11:36:56 - BotManager - INFO - Started bot connector bots_open_ai...
+2024-11-03 11:36:56 - BotManager - INFO - Starting wakeup scheduler...
+2024-11-03 11:36:56 - BotManager - INFO - Started wakeup_scheduler...
+2024-11-03 11:36:56 - BotManager - INFO - No wakeup ready to schedule will schedule on 1730716616
+2024-11-03 11:53:28 - BotManager - INFO - Loading connectors of types: bots, chat_interfaces, user_interfaces
+2024-11-03 11:53:29 - BotManager - INFO - Loaded connector: open_ai from bots
+2024-11-03 11:53:29 - BotManager - INFO - Loaded connector: matrix_messenger from chat_interfaces
+2024-11-03 11:53:29 - BotManager - INFO - Loaded connector: web_api from user_interfaces
+2024-11-03 11:53:29 - BotManager - INFO - Started loading bot config and memory
+2024-11-03 11:53:29 - BotManager - INFO - Config loaded successfully from E:\code\colabGPT\bot-manager\config.json
+2024-11-03 11:53:29 - BotManager - INFO - Bot memory loaded successfully from E:\code\colabGPT\bot-manager\bot_memory.json
+2024-11-03 11:53:29 - BotManager - INFO - Done loading bot config and memory
+2024-11-03 11:53:29 - BotManager - INFO - Config stored successfully to E:\code\colabGPT\bot-manager\config.json
+2024-11-03 11:53:29 - BotManager - ERROR - Failed store bot config and memory: 'ModelMessage' object has no attribute 'items'
+Traceback (most recent call last):
+  File "E:\code\colabGPT\bot-manager\app\lib\storage.py", line 221, in store_data
+    self._store_memory()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "E:\code\colabGPT\bot-manager\app\lib\storage.py", line 280, in _store_memory
+    json.dump(self.bot_memory.to_dict(), f, indent=4)
+              ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "E:\code\colabGPT\bot-manager\app\lib\storage.py", line 106, in to_dict
+    date: summary.to_dict() for date, summary in summaries.items()
+                                                 ^^^^^^^^^^^^^^^
+AttributeError: 'ModelMessage' object has no attribute 'items'
+2024-11-03 11:53:29 - BotManager - INFO - Starting api connector user_interfaces_web_api...
+2024-11-03 11:53:29 - BotManager - INFO - Started api connector user_interfaces_web_api...
+2024-11-03 11:53:29 - BotManager - INFO - Starting bot connector bots_open_ai...
+2024-11-03 11:53:29 - BotManager - INFO - Started bot connector bots_open_ai...
+2024-11-03 11:53:29 - BotManager - INFO - Starting wakeup scheduler...
+2024-11-03 11:53:29 - BotManager - INFO - Config stored successfully to E:\code\colabGPT\bot-manager\config.json
+2024-11-03 11:53:29 - BotManager - INFO - Started wakeup_scheduler...
+2024-11-03 11:53:29 - BotManager - ERROR - Failed store bot config and memory: 'ModelMessage' object has no attribute 'items'
+Traceback (most recent call last):
+  File "E:\code\colabGPT\bot-manager\app\lib\storage.py", line 221, in store_data
+    self._store_memory()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "E:\code\colabGPT\bot-manager\app\lib\storage.py", line 280, in _store_memory
+    json.dump(self.bot_memory.to_dict(), f, indent=4)
+              ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "E:\code\colabGPT\bot-manager\app\lib\storage.py", line 106, in to_dict
+    date: summary.to_dict() for date, summary in summaries.items()
+                                                 ^^^^^^^^^^^^^^^
+AttributeError: 'ModelMessage' object has no attribute 'items'
+2024-11-03 11:53:29 - BotManager - INFO - No wakeup ready to schedule will schedule on 1730717609
+2024-11-03 11:54:29 - BotManager - INFO - No wakeup ready to schedule will schedule on 1730717609
+2024-11-03 11:55:29 - BotManager - INFO - No wakeup ready to schedule will schedule on 1730717609
+2024-11-03 11:56:29 - BotManager - INFO - No wakeup ready to schedule will schedule on 1730717609
+2024-11-03 11:57:29 - BotManager - INFO - No wakeup ready to schedule will schedule on 1730717609
+2024-11-03 11:58:29 - BotManager - INFO - No wakeup ready to schedule will schedule on 1730717609
+2024-11-03 11:59:29 - BotManager - INFO - No wakeup ready to schedule will schedule on 1730717609
+2024-11-03 12:00:29 - BotManager - INFO - No wakeup ready to schedule will schedule on 1730717609
+2024-11-03 12:01:29 - BotManager - INFO - No wakeup ready to schedule will schedule on 1730717609
+2024-11-03 12:02:29 - BotManager - INFO - No wakeup ready to schedule will schedule on 1730717609
+2024-11-03 12:03:29 - BotManager - INFO - No wakeup ready to schedule will schedule on 1730717609
+2024-11-03 12:04:29 - BotManager - INFO - No wakeup ready to schedule will schedule on 1730717609
+2024-11-03 12:05:29 - BotManager - INFO - No wakeup ready to schedule will schedule on 1730717609
+2024-11-03 12:06:29 - BotManager - INFO - No wakeup ready to schedule will schedule on 1730717609
+2024-11-03 12:07:29 - BotManager - INFO - No wakeup ready to schedule will schedule on 1730717609
+2024-11-03 12:08:29 - BotManager - INFO - No wakeup ready to schedule will schedule on 1730717609
+2024-11-03 12:09:29 - BotManager - INFO - No wakeup ready to schedule will schedule on 1730717609
+2024-11-03 12:10:29 - BotManager - INFO - No wakeup ready to schedule will schedule on 1730717609
+2024-11-03 12:11:29 - BotManager - INFO - No wakeup ready to schedule will schedule on 1730717609
+2024-11-03 12:12:29 - BotManager - INFO - No wakeup ready to schedule will schedule on 1730717609
+2024-11-03 12:13:29 - BotManager - INFO - No wakeup ready to schedule will schedule on 1730717609
+2024-11-03 12:14:29 - BotManager - INFO - No wakeup ready to schedule will schedule on 1730717609
+2024-11-03 12:15:29 - BotManager - INFO - No wakeup ready to schedule will schedule on 1730717609
+2024-11-03 12:16:29 - BotManager - INFO - No wakeup ready to schedule will schedule on 1730717609
+2024-11-03 12:17:29 - BotManager - INFO - No wakeup ready to schedule will schedule on 1730717609
+2024-11-03 12:18:29 - BotManager - INFO - No wakeup ready to schedule will schedule on 1730717609
+2024-11-03 12:19:29 - BotManager - INFO - No wakeup ready to schedule will schedule on 1730717609
+2024-11-03 12:20:29 - BotManager - INFO - No wakeup ready to schedule will schedule on 1730717609
+2024-11-03 12:21:29 - BotManager - INFO - No wakeup ready to schedule will schedule on 1730717609
+2024-11-03 12:22:30 - BotManager - INFO - No wakeup ready to schedule will schedule on 1730717609
+2024-11-03 12:23:30 - BotManager - INFO - No wakeup ready to schedule will schedule on 1730717609
+2024-11-03 12:24:30 - BotManager - INFO - No wakeup ready to schedule will schedule on 1730717609
+2024-11-03 12:25:30 - BotManager - INFO - No wakeup ready to schedule will schedule on 1730717609
+2024-11-03 12:26:30 - BotManager - INFO - No wakeup ready to schedule will schedule on 1730717609
+2024-11-03 12:27:30 - BotManager - INFO - No wakeup ready to schedule will schedule on 1730717609
+2024-11-03 14:06:01 - BotManager - INFO - Loading connectors of types: bots, chat_interfaces, user_interfaces
+2024-11-03 14:06:01 - BotManager - INFO - Loaded connector: open_ai from bots
+2024-11-03 14:06:01 - BotManager - INFO - Loaded connector: matrix_messenger from chat_interfaces
+2024-11-03 14:06:01 - BotManager - INFO - Loaded connector: web_api from user_interfaces
+2024-11-03 14:11:55 - BotManager - INFO - Loading connectors of types: bots, chat_interfaces, user_interfaces
+2024-11-03 14:11:55 - BotManager - INFO - Loaded connector: open_ai from bots
+2024-11-03 14:11:55 - BotManager - INFO - Loaded connector: matrix_messenger from chat_interfaces
+2024-11-03 14:11:55 - BotManager - INFO - Loaded connector: web_api from user_interfaces
+2024-11-03 14:11:55 - BotManager - INFO - Started loading bot config and memory
+2024-11-03 14:11:55 - BotManager - ERROR - Failed to read bot config and memory: 'Storage' object has no attribute 'config_path'
+Traceback (most recent call last):
+  File "E:\code\colabGPT\bot-manager\app\lib\storage.py", line 290, in load_data
+    self._load_config()
+    ~~~~~~~~~~~~~~~~~^^
+  File "E:\code\colabGPT\bot-manager\app\lib\storage.py", line 306, in _load_config
+    if not self.config_path.is_file():
+           ^^^^^^^^^^^^^^^^
+AttributeError: 'Storage' object has no attribute 'config_path'
+2024-11-03 14:11:55 - BotManager - ERROR - Failed store bot config and memory: 'Storage' object has no attribute 'bot_config'
+Traceback (most recent call last):
+  File "E:\code\colabGPT\bot-manager\app\lib\storage.py", line 299, in store_data
+    self._store_config()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "E:\code\colabGPT\bot-manager\app\lib\storage.py", line 325, in _store_config
+    if self.bot_config is None:
+       ^^^^^^^^^^^^^^^
+AttributeError: 'Storage' object has no attribute 'bot_config'. Did you mean: '_load_config'?
+2024-11-03 14:11:55 - BotManager - INFO - Starting api connector user_interfaces_web_api...
+2024-11-03 14:11:55 - BotManager - INFO - Started api connector user_interfaces_web_api...
+2024-11-03 14:11:55 - BotManager - INFO - Starting bot connector bots_open_ai...
+2024-11-03 14:11:55 - BotManager - INFO - Started bot connector bots_open_ai...
+2024-11-03 14:11:55 - BotManager - INFO - Starting wakeup scheduler...
+2024-11-03 14:11:55 - BotManager - INFO - Started wakeup_scheduler...
+2024-11-03 14:11:55 - BotManager - INFO - No wakeup ready to schedule will schedule on 1730725915
+2024-11-03 14:13:38 - BotManager - INFO - Loading connectors of types: bots, chat_interfaces, user_interfaces
+2024-11-03 14:13:38 - BotManager - INFO - Loaded connector: open_ai from bots
+2024-11-03 14:13:38 - BotManager - INFO - Loaded connector: matrix_messenger from chat_interfaces
+2024-11-03 14:13:38 - BotManager - INFO - Loaded connector: web_api from user_interfaces
+2024-11-03 14:13:38 - BotManager - INFO - Started loading bot config and memory
+2024-11-03 14:13:38 - BotManager - ERROR - Failed to read bot config and memory: Config.from_dict.<locals>.get_value() takes 3 positional arguments but 4 were given
+Traceback (most recent call last):
+  File "E:\code\colabGPT\bot-manager\app\lib\storage.py", line 287, in load_data
+    self._load_config()
+    ~~~~~~~~~~~~~~~~~^^
+  File "E:\code\colabGPT\bot-manager\app\lib\storage.py", line 313, in _load_config
+    self.bot_config = Config.from_dict(config_data)
+                      ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "E:\code\colabGPT\bot-manager\app\lib\storage.py", line 239, in from_dict
+    matrix_server=get_value(message_interface_config, default_config["message_interface"], "matrix_server", "matrix.org"),
+                  ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: Config.from_dict.<locals>.get_value() takes 3 positional arguments but 4 were given
+2024-11-03 14:13:38 - BotManager - ERROR - Failed store bot config and memory: 'Storage' object has no attribute 'bot_config'
+Traceback (most recent call last):
+  File "E:\code\colabGPT\bot-manager\app\lib\storage.py", line 296, in store_data
+    self._store_config()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "E:\code\colabGPT\bot-manager\app\lib\storage.py", line 322, in _store_config
+    if self.bot_config is None:
+       ^^^^^^^^^^^^^^^
+AttributeError: 'Storage' object has no attribute 'bot_config'. Did you mean: '_load_config'?
+2024-11-03 14:13:38 - BotManager - INFO - Starting api connector user_interfaces_web_api...
+2024-11-03 14:13:38 - BotManager - INFO - Started api connector user_interfaces_web_api...
+2024-11-03 14:13:38 - BotManager - INFO - Starting bot connector bots_open_ai...
+2024-11-03 14:13:38 - BotManager - INFO - Started bot connector bots_open_ai...
+2024-11-03 14:13:38 - BotManager - INFO - Starting wakeup scheduler...
+2024-11-03 14:13:38 - BotManager - INFO - Started wakeup_scheduler...
+2024-11-03 14:13:38 - BotManager - INFO - No wakeup ready to schedule will schedule on 1730726018
+2024-11-03 14:14:09 - BotManager - INFO - Loading connectors of types: bots, chat_interfaces, user_interfaces
+2024-11-03 14:14:09 - BotManager - INFO - Loaded connector: open_ai from bots
+2024-11-03 14:14:09 - BotManager - INFO - Loaded connector: matrix_messenger from chat_interfaces
+2024-11-03 14:14:09 - BotManager - INFO - Loaded connector: web_api from user_interfaces
+2024-11-03 14:14:09 - BotManager - INFO - Started loading bot config and memory
+2024-11-03 14:14:09 - BotManager - INFO - Config loaded successfully from E:\code\colabGPT\bot-manager\config.json
+2024-11-03 14:14:09 - BotManager - ERROR - Failed to read bot config and memory: Invalid JSON in memory file: Expecting value: line 1 column 1 (char 0)
+Traceback (most recent call last):
+  File "E:\code\colabGPT\bot-manager\app\lib\storage.py", line 340, in _load_memory
+    memory_data = json.load(f)
+  File "C:\Users\max\AppData\Local\Programs\Python\Python313\Lib\json\__init__.py", line 293, in load
+    return loads(fp.read(),
+        cls=cls, object_hook=object_hook,
+        parse_float=parse_float, parse_int=parse_int,
+        parse_constant=parse_constant, object_pairs_hook=object_pairs_hook, **kw)
+  File "C:\Users\max\AppData\Local\Programs\Python\Python313\Lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "C:\Users\max\AppData\Local\Programs\Python\Python313\Lib\json\decoder.py", line 344, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\max\AppData\Local\Programs\Python\Python313\Lib\json\decoder.py", line 362, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\code\colabGPT\bot-manager\app\lib\storage.py", line 286, in load_data
+    self._load_memory()
+    ~~~~~~~~~~~~~~~~~^^
+  File "E:\code\colabGPT\bot-manager\app\lib\storage.py", line 346, in _load_memory
+    raise ValueError(f"Invalid JSON in memory file: {e}")
+ValueError: Invalid JSON in memory file: Expecting value: line 1 column 1 (char 0)
+2024-11-03 14:14:09 - BotManager - INFO - Config stored successfully to E:\code\colabGPT\bot-manager\config.json
+2024-11-03 14:14:09 - BotManager - ERROR - Failed store bot config and memory: 'Storage' object has no attribute 'bot_memory'
+Traceback (most recent call last):
+  File "E:\code\colabGPT\bot-manager\app\lib\storage.py", line 295, in store_data
+    self._store_memory()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "E:\code\colabGPT\bot-manager\app\lib\storage.py", line 350, in _store_memory
+    if self.bot_memory is None:
+       ^^^^^^^^^^^^^^^
+AttributeError: 'Storage' object has no attribute 'bot_memory'. Did you mean: '_load_memory'?
+2024-11-03 14:14:09 - BotManager - INFO - Starting api connector user_interfaces_web_api...
+2024-11-03 14:14:09 - BotManager - INFO - Started api connector user_interfaces_web_api...
+2024-11-03 14:14:09 - BotManager - INFO - Starting bot connector bots_open_ai...
+2024-11-03 14:14:09 - BotManager - INFO - Started bot connector bots_open_ai...
+2024-11-03 14:14:09 - BotManager - INFO - Starting wakeup scheduler...
+2024-11-03 14:14:09 - BotManager - INFO - Started wakeup_scheduler...
+2024-11-03 14:14:09 - BotManager - INFO - No wakeup ready to schedule will schedule on 1730726049
+2024-11-03 14:15:09 - BotManager - INFO - No wakeup ready to schedule will schedule on 1730726049
+2024-11-03 14:15:11 - BotManager - ERROR - Bot connector user_interfaces_web_api exited with an error: 'Storage' object has no attribute 'bot_memory'
+Traceback (most recent call last):
+  File "E:\code\colabGPT\bot-manager\app\lib\bot_manager.py", line 106, in listener
+    asyncio.run(connector.on_startup())
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\max\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 194, in run
+    return runner.run(main)
+           ~~~~~~~~~~^^^^^^
+  File "C:\Users\max\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\max\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 721, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "E:\code\colabGPT\bot-manager\connectors\bots\open_ai\main.py", line 50, in on_startup
+    await self.send_and_respond_to_model(
+    ...<3 lines>...
+    )
+  File "E:\code\colabGPT\bot-manager\connectors\bots\open_ai\main.py", line 169, in send_and_respond_to_model
+    self.bot.storage.bot_memory.add_message(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Storage' object has no attribute 'bot_memory'
+2024-11-03 14:15:17 - BotManager - INFO - Loading connectors of types: bots, chat_interfaces, user_interfaces
+2024-11-03 14:15:17 - BotManager - INFO - Loaded connector: open_ai from bots
+2024-11-03 14:15:17 - BotManager - INFO - Loaded connector: matrix_messenger from chat_interfaces
+2024-11-03 14:15:17 - BotManager - INFO - Loaded connector: web_api from user_interfaces
+2024-11-03 14:15:17 - BotManager - INFO - Started loading bot config and memory
+2024-11-03 14:15:17 - BotManager - INFO - Config loaded successfully from E:\code\colabGPT\bot-manager\config.json
+2024-11-03 14:15:17 - BotManager - WARNING - Memory file not found at E:\code\colabGPT\bot-manager\bot_memory.json. Initializing empty memory.
+2024-11-03 14:15:17 - BotManager - INFO - Done loading bot config and memory
+2024-11-03 14:15:17 - BotManager - INFO - Config stored successfully to E:\code\colabGPT\bot-manager\config.json
+2024-11-03 14:15:17 - BotManager - INFO - Bot memory stored successfully to E:\code\colabGPT\bot-manager\bot_memory.json
+2024-11-03 14:15:17 - BotManager - INFO - Starting api connector user_interfaces_web_api...
+2024-11-03 14:15:17 - BotManager - INFO - Started api connector user_interfaces_web_api...
+2024-11-03 14:15:17 - BotManager - INFO - Starting bot connector bots_open_ai...
+2024-11-03 14:15:17 - BotManager - INFO - Started bot connector bots_open_ai...
+2024-11-03 14:15:17 - BotManager - INFO - Starting wakeup scheduler...
+2024-11-03 14:15:17 - BotManager - INFO - Started wakeup_scheduler...
+2024-11-03 14:15:17 - BotManager - INFO - Config stored successfully to E:\code\colabGPT\bot-manager\config.json
+2024-11-03 14:15:17 - BotManager - INFO - No wakeup ready to schedule will schedule on 1730726117
+2024-11-03 14:15:17 - BotManager - INFO - Bot memory stored successfully to E:\code\colabGPT\bot-manager\bot_memory.json
+2024-11-03 14:16:17 - BotManager - INFO - No wakeup ready to schedule will schedule on 1730726117
+2024-11-03 14:16:49 - BotManager - INFO - Loading connectors of types: bots, chat_interfaces, user_interfaces
+2024-11-03 14:16:49 - BotManager - INFO - Loaded connector: open_ai from bots
+2024-11-03 14:16:49 - BotManager - INFO - Loaded connector: matrix_messenger from chat_interfaces
+2024-11-03 14:16:49 - BotManager - INFO - Loaded connector: web_api from user_interfaces
+2024-11-03 14:16:49 - BotManager - INFO - Started loading bot config and memory
+2024-11-03 14:16:49 - BotManager - INFO - Config loaded successfully from E:\code\colabGPT\bot-manager\config.json
+2024-11-03 14:16:49 - BotManager - INFO - Bot memory loaded successfully from E:\code\colabGPT\bot-manager\bot_memory.json
+2024-11-03 14:16:49 - BotManager - INFO - Done loading bot config and memory
+2024-11-03 14:16:49 - BotManager - INFO - Config stored successfully to E:\code\colabGPT\bot-manager\config.json
+2024-11-03 14:16:49 - BotManager - INFO - Bot memory stored successfully to E:\code\colabGPT\bot-manager\bot_memory.json
+2024-11-03 14:16:49 - BotManager - INFO - Starting api connector user_interfaces_web_api...
+2024-11-03 14:16:49 - BotManager - INFO - Started api connector user_interfaces_web_api...
+2024-11-03 14:16:49 - BotManager - INFO - Starting bot connector bots_open_ai...
+2024-11-03 14:16:49 - BotManager - INFO - Started bot connector bots_open_ai...
+2024-11-03 14:16:49 - BotManager - INFO - Starting wakeup scheduler...
+2024-11-03 14:16:49 - BotManager - INFO - Started wakeup_scheduler...
+2024-11-03 14:16:49 - BotManager - INFO - Starting web server on port: {}
+2024-11-03 14:16:49 - BotManager - INFO - Config stored successfully to E:\code\colabGPT\bot-manager\config.json
+2024-11-03 14:16:49 - BotManager - INFO - No wakeup ready to schedule will schedule on 1730726209
+2024-11-03 14:16:49 - BotManager - INFO - Bot memory stored successfully to E:\code\colabGPT\bot-manager\bot_memory.json
+2024-11-03 14:17:06 - BotManager - INFO - Loading connectors of types: bots, chat_interfaces, user_interfaces
+2024-11-03 14:17:06 - BotManager - INFO - Loaded connector: open_ai from bots
+2024-11-03 14:17:06 - BotManager - INFO - Loaded connector: matrix_messenger from chat_interfaces
+2024-11-03 14:17:06 - BotManager - INFO - Loaded connector: web_api from user_interfaces
+2024-11-03 14:17:06 - BotManager - INFO - Started loading bot config and memory
+2024-11-03 14:17:06 - BotManager - INFO - Config loaded successfully from E:\code\colabGPT\bot-manager\config.json
+2024-11-03 14:17:06 - BotManager - INFO - Bot memory loaded successfully from E:\code\colabGPT\bot-manager\bot_memory.json
+2024-11-03 14:17:06 - BotManager - INFO - Done loading bot config and memory
+2024-11-03 14:17:06 - BotManager - INFO - Config stored successfully to E:\code\colabGPT\bot-manager\config.json
+2024-11-03 14:17:06 - BotManager - INFO - Bot memory stored successfully to E:\code\colabGPT\bot-manager\bot_memory.json
+2024-11-03 14:17:06 - BotManager - INFO - Starting api connector user_interfaces_web_api...
+2024-11-03 14:17:06 - BotManager - INFO - Started api connector user_interfaces_web_api...
+2024-11-03 14:17:06 - BotManager - INFO - Starting bot connector bots_open_ai...
+2024-11-03 14:17:06 - BotManager - INFO - Started bot connector bots_open_ai...
+2024-11-03 14:17:06 - BotManager - INFO - Starting wakeup scheduler...
+2024-11-03 14:17:06 - BotManager - INFO - Started wakeup_scheduler...
+2024-11-03 14:17:06 - BotManager - INFO - No wakeup ready to schedule will schedule on 1730726226
+2024-11-03 14:17:06 - BotManager - INFO - Config stored successfully to E:\code\colabGPT\bot-manager\config.json
+2024-11-03 14:17:06 - BotManager - INFO - Starting web server on port: 5000
+2024-11-03 14:17:06 - BotManager - INFO - Bot memory stored successfully to E:\code\colabGPT\bot-manager\bot_memory.json
+2024-11-03 14:18:06 - BotManager - INFO - No wakeup ready to schedule will schedule on 1730726226
+2024-11-03 14:18:38 - BotManager - INFO - Loading connectors of types: bots, chat_interfaces, user_interfaces
+2024-11-03 14:18:38 - BotManager - INFO - Loaded connector: open_ai from bots
+2024-11-03 14:18:38 - BotManager - INFO - Loaded connector: matrix_messenger from chat_interfaces
+2024-11-03 14:18:38 - BotManager - INFO - Loaded connector: web_api from user_interfaces
+2024-11-03 14:18:38 - BotManager - INFO - Started loading bot config and memory
+2024-11-03 14:18:38 - BotManager - INFO - Config loaded successfully from E:\code\colabGPT\bot-manager\config.json
+2024-11-03 14:18:38 - BotManager - INFO - Bot memory loaded successfully from E:\code\colabGPT\bot-manager\bot_memory.json
+2024-11-03 14:18:38 - BotManager - INFO - Done loading bot config and memory
+2024-11-03 14:18:38 - BotManager - INFO - Config stored successfully to E:\code\colabGPT\bot-manager\config.json
+2024-11-03 14:18:38 - BotManager - INFO - Bot memory stored successfully to E:\code\colabGPT\bot-manager\bot_memory.json
+2024-11-03 14:18:38 - BotManager - INFO - Starting api connector user_interfaces_web_api...
+2024-11-03 14:18:38 - BotManager - INFO - Started api connector user_interfaces_web_api...
+2024-11-03 14:18:38 - BotManager - INFO - Starting bot connector bots_open_ai...
+2024-11-03 14:18:38 - BotManager - INFO - Started bot connector bots_open_ai...
+2024-11-03 14:18:38 - BotManager - INFO - Starting wakeup scheduler...
+2024-11-03 14:18:38 - BotManager - INFO - Started wakeup_scheduler...
+2024-11-03 14:18:38 - BotManager - INFO - Starting web server on port: 5000
+2024-11-03 14:18:38 - BotManager - INFO - Config stored successfully to E:\code\colabGPT\bot-manager\config.json
+2024-11-03 14:18:38 - BotManager - INFO - No wakeup ready to schedule will schedule -  next wakeup 86399.17495465279
+2024-11-03 14:18:38 - BotManager - INFO - Bot memory stored successfully to E:\code\colabGPT\bot-manager\bot_memory.json
+2024-11-03 14:19:03 - BotManager - INFO - Loading connectors of types: bots, chat_interfaces, user_interfaces
+2024-11-03 14:19:03 - BotManager - INFO - Loaded connector: open_ai from bots
+2024-11-03 14:19:03 - BotManager - INFO - Loaded connector: matrix_messenger from chat_interfaces
+2024-11-03 14:19:03 - BotManager - INFO - Loaded connector: web_api from user_interfaces
+2024-11-03 14:19:03 - BotManager - INFO - Started loading bot config and memory
+2024-11-03 14:19:03 - BotManager - INFO - Config loaded successfully from E:\code\colabGPT\bot-manager\config.json
+2024-11-03 14:19:03 - BotManager - INFO - Bot memory loaded successfully from E:\code\colabGPT\bot-manager\bot_memory.json
+2024-11-03 14:19:03 - BotManager - INFO - Done loading bot config and memory
+2024-11-03 14:19:03 - BotManager - INFO - Config stored successfully to E:\code\colabGPT\bot-manager\config.json
+2024-11-03 14:19:03 - BotManager - INFO - Bot memory stored successfully to E:\code\colabGPT\bot-manager\bot_memory.json
+2024-11-03 14:19:03 - BotManager - INFO - Starting api connector user_interfaces_web_api...
+2024-11-03 14:19:03 - BotManager - INFO - Started api connector user_interfaces_web_api...
+2024-11-03 14:19:03 - BotManager - INFO - Starting bot connector bots_open_ai...
+2024-11-03 14:19:03 - BotManager - INFO - Started bot connector bots_open_ai...
+2024-11-03 14:19:03 - BotManager - INFO - Starting wakeup scheduler...
+2024-11-03 14:19:03 - BotManager - INFO - Started wakeup_scheduler...
+2024-11-03 14:19:03 - BotManager - INFO - Config stored successfully to E:\code\colabGPT\bot-manager\config.json
+2024-11-03 14:19:03 - BotManager - INFO - Starting web server on port: 5000
+2024-11-03 14:19:03 - BotManager - INFO - No wakeup ready to schedule will schedule -  next wakeup 1439.9970370729764
+2024-11-03 14:19:03 - BotManager - INFO - Bot memory stored successfully to E:\code\colabGPT\bot-manager\bot_memory.json
+2024-11-03 14:19:41 - BotManager - INFO - Loading connectors of types: bots, chat_interfaces, user_interfaces
+2024-11-03 14:19:41 - BotManager - INFO - Loaded connector: open_ai from bots
+2024-11-03 14:19:41 - BotManager - INFO - Loaded connector: matrix_messenger from chat_interfaces
+2024-11-03 14:19:41 - BotManager - INFO - Loaded connector: web_api from user_interfaces
+2024-11-03 14:19:41 - BotManager - INFO - Started loading bot config and memory
+2024-11-03 14:19:41 - BotManager - INFO - Config loaded successfully from E:\code\colabGPT\bot-manager\config.json
+2024-11-03 14:19:41 - BotManager - INFO - Bot memory loaded successfully from E:\code\colabGPT\bot-manager\bot_memory.json
+2024-11-03 14:19:41 - BotManager - INFO - Done loading bot config and memory
+2024-11-03 14:19:41 - BotManager - INFO - Config stored successfully to E:\code\colabGPT\bot-manager\config.json
+2024-11-03 14:19:41 - BotManager - INFO - Bot memory stored successfully to E:\code\colabGPT\bot-manager\bot_memory.json
+2024-11-03 14:19:41 - BotManager - INFO - Starting api connector user_interfaces_web_api...
+2024-11-03 14:19:41 - BotManager - INFO - Started api connector user_interfaces_web_api...
+2024-11-03 14:19:41 - BotManager - INFO - Starting bot connector bots_open_ai...
+2024-11-03 14:19:41 - BotManager - INFO - Started bot connector bots_open_ai...
+2024-11-03 14:19:41 - BotManager - INFO - Starting wakeup scheduler...
+2024-11-03 14:19:41 - BotManager - INFO - Config stored successfully to E:\code\colabGPT\bot-manager\config.json
+2024-11-03 14:19:41 - BotManager - INFO - Started wakeup_scheduler...
+2024-11-03 14:19:41 - BotManager - INFO - Starting web server on port: 5000
+2024-11-03 14:19:41 - BotManager - INFO - Bot memory stored successfully to E:\code\colabGPT\bot-manager\bot_memory.json
+2024-11-03 14:19:41 - BotManager - INFO - No wakeup ready to schedule will schedule -  next wakeup in 23 hours
+2024-11-03 14:19:57 - BotManager - INFO - Loading connectors of types: bots, chat_interfaces, user_interfaces
+2024-11-03 14:19:57 - BotManager - INFO - Loaded connector: open_ai from bots
+2024-11-03 14:19:57 - BotManager - INFO - Loaded connector: matrix_messenger from chat_interfaces
+2024-11-03 14:19:57 - BotManager - INFO - Loaded connector: web_api from user_interfaces
+2024-11-03 14:19:57 - BotManager - INFO - Started loading bot config and memory
+2024-11-03 14:19:57 - BotManager - INFO - Config loaded successfully from E:\code\colabGPT\bot-manager\config.json
+2024-11-03 14:19:57 - BotManager - INFO - Bot memory loaded successfully from E:\code\colabGPT\bot-manager\bot_memory.json
+2024-11-03 14:19:57 - BotManager - INFO - Done loading bot config and memory
+2024-11-03 14:19:57 - BotManager - INFO - Config stored successfully to E:\code\colabGPT\bot-manager\config.json
+2024-11-03 14:19:57 - BotManager - INFO - Bot memory stored successfully to E:\code\colabGPT\bot-manager\bot_memory.json
+2024-11-03 14:19:57 - BotManager - INFO - Starting api connector user_interfaces_web_api...
+2024-11-03 14:19:57 - BotManager - INFO - Started api connector user_interfaces_web_api...
+2024-11-03 14:19:57 - BotManager - INFO - Starting bot connector bots_open_ai...
+2024-11-03 14:19:57 - BotManager - INFO - Started bot connector bots_open_ai...
+2024-11-03 14:19:57 - BotManager - INFO - Starting wakeup scheduler...
+2024-11-03 14:19:57 - BotManager - INFO - Started wakeup_scheduler...
+2024-11-03 14:19:57 - BotManager - INFO - Starting web server on port: 5000
+2024-11-03 14:19:57 - BotManager - INFO - Config stored successfully to E:\code\colabGPT\bot-manager\config.json
+2024-11-03 14:19:57 - BotManager - INFO - No wakeup ready to schedule will schedule -  next wakeup in 24 hours
+2024-11-03 14:19:57 - BotManager - INFO - Bot memory stored successfully to E:\code\colabGPT\bot-manager\bot_memory.json
+2024-11-03 14:20:49 - BotManager - INFO - Loading connectors of types: bots, chat_interfaces, user_interfaces
+2024-11-03 14:20:49 - BotManager - INFO - Loaded connector: open_ai from bots
+2024-11-03 14:20:49 - BotManager - INFO - Loaded connector: matrix_messenger from chat_interfaces
+2024-11-03 14:20:49 - BotManager - INFO - Loaded connector: web_api from user_interfaces
+2024-11-03 14:20:49 - BotManager - INFO - Started loading bot config and memory
+2024-11-03 14:20:49 - BotManager - INFO - Config loaded successfully from E:\code\colabGPT\bot-manager\config.json
+2024-11-03 14:20:49 - BotManager - INFO - Bot memory loaded successfully from E:\code\colabGPT\bot-manager\bot_memory.json
+2024-11-03 14:20:49 - BotManager - INFO - Done loading bot config and memory
+2024-11-03 14:20:49 - BotManager - INFO - Config stored successfully to E:\code\colabGPT\bot-manager\config.json
+2024-11-03 14:20:49 - BotManager - INFO - Bot memory stored successfully to E:\code\colabGPT\bot-manager\bot_memory.json
+2024-11-03 14:20:49 - BotManager - INFO - Starting api connector user_interfaces_web_api...
+2024-11-03 14:20:49 - BotManager - INFO - Started api connector user_interfaces_web_api...
+2024-11-03 14:20:49 - BotManager - INFO - Starting bot connector bots_open_ai...
+2024-11-03 14:20:49 - BotManager - INFO - Started bot connector bots_open_ai...
+2024-11-03 14:20:49 - BotManager - INFO - Starting wakeup scheduler...
+2024-11-03 14:20:49 - BotManager - INFO - Started wakeup_scheduler...
+2024-11-03 14:20:49 - BotManager - INFO - Starting web server on port: 5000
+2024-11-03 14:20:49 - BotManager - INFO - Config stored successfully to E:\code\colabGPT\bot-manager\config.json
+2024-11-03 14:20:49 - BotManager - INFO - No wakeup ready to schedule - next wakeup in 24.0 hours
+2024-11-03 14:20:49 - BotManager - INFO - Bot memory stored successfully to E:\code\colabGPT\bot-manager\bot_memory.json
+2024-11-03 14:21:49 - BotManager - INFO - No wakeup ready to schedule - next wakeup in 24.0 hours
+2024-11-03 14:22:49 - BotManager - INFO - No wakeup ready to schedule - next wakeup in 24.0 hours
+2024-11-03 14:23:49 - BotManager - INFO - No wakeup ready to schedule - next wakeup in 23.9 hours
+2024-11-03 14:24:49 - BotManager - INFO - No wakeup ready to schedule - next wakeup in 23.9 hours
+2024-11-03 14:25:49 - BotManager - INFO - No wakeup ready to schedule - next wakeup in 23.9 hours
+2024-11-03 14:26:49 - BotManager - INFO - No wakeup ready to schedule - next wakeup in 23.9 hours
+2024-11-03 14:27:49 - BotManager - INFO - No wakeup ready to schedule - next wakeup in 23.9 hours
+2024-11-03 14:28:49 - BotManager - INFO - No wakeup ready to schedule - next wakeup in 23.9 hours

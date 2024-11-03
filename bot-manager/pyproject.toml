@@ -1,0 +1,7 @@
+[tool.black]
+line-length = 80
+skip-string-normalization = true  # Optional, if you don't want Black to alter quotes
+
+[tool.isort]
+profile = "black"
+line_length = 80

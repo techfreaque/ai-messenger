@@ -1,0 +1,5 @@
+flask
+
+openai
+matrix-nio[e2e]
+python-olm

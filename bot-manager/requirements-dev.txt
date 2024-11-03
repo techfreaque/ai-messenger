@@ -1,0 +1,17 @@
+requests
+matrix-nio
+
+flask
+gunicorn
+
+
+# type checking linting etc.
+mypy
+pylint
+flake8
+black 
+isort
+
+
+# building
+pyinstaller

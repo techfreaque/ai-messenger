@@ -1,0 +1,21 @@
+[MASTER]
+# Fail if there are any issues
+fail-under = 10.0
+confidence = HIGH
+
+[MESSAGES CONTROL]
+# Enable all checks and disable the ones you specifically don't want
+enable = all
+disable = missing-module-docstring, missing-class-docstring, missing-function-docstring
+
+[FORMAT]
+# Strict line length limit
+max-line-length = 80
+indent-string = "    "  # 4 spaces per indent level
+
+[REPORTS]
+# Output minimal report information
+reports = no
+
+[BASIC]
+good-names = i, j, k, ex, Run, _
