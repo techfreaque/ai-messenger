@@ -1,8 +1,9 @@
-from dataclasses import dataclass
-
 from app.lib.messaging.room_user import ChatRoomUser
 
 
-@dataclass
 class ChatRoomUsers:
-    room_users: list[ChatRoomUser]
+    def __init__(self):
+        self.room_users: list[ChatRoomUser] = []
+
+    def add_member(self, id: str, name: str):
+        self.room_users.append(ChatRoomUser(id, name))

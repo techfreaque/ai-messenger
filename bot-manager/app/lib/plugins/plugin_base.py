@@ -3,8 +3,8 @@ from abc import abstractmethod
 from typing import TYPE_CHECKING
 
 from app.lib.logger import setup_logger
-from app.lib.messaging.message_send import SendChatMessageResponse
 from app.lib.messaging.message_received import ReceiveChatMessage
+from app.lib.messaging.message_send import SendChatMessageResponse
 from app.lib.messaging.room import ChatRoom
 from app.lib.messaging.room_users import ChatRoomUsers
 from app.lib.messaging.rooms import ChatRooms
@@ -13,24 +13,30 @@ if TYPE_CHECKING:
     from app.lib.bot_manager import BotManager
 
 
-class ConnectorBase:
+class PluginBase:
     """
-    Protocol for connector classes. All connectors must implement this class
+    Protocol for plugin classes. All plugins must implement this class
     """
 
     bot: "BotManager"
     logger: logging.Logger
 
-    def __init__(self, bot: "BotManager", connector_name: str):
+    def __init__(self, bot: "BotManager", plugin_name: str):
         self.bot: "BotManager" = bot
         self.logger: logging.Logger = setup_logger(
-            "Connector " + connector_name,
+            "Plugin " + plugin_name,
             logging.DEBUG,
         )
 
     ##
     ## callbacks
     ##
+    @abstractmethod
+    async def dream(self) -> None:
+        """
+        while there is nothing to do you can reorganize data when, start training or just nothing
+        """
+
     @abstractmethod
     async def on_startup(
         self,
@@ -48,15 +54,13 @@ class ConnectorBase:
         """
 
     @abstractmethod
-    async def new_message_callback(
-        self, room: ChatRoom, message: ReceiveChatMessage
-    ) -> None:
+    async def new_message_callback(self, message: ReceiveChatMessage) -> None:
         """
-        This gets called when a new message comes in from a messaging connector
+        This gets called when a new message comes in from a messaging plugin
         """
 
     ##
-    ## web api connectors
+    ## web api plugins
     ##
     @abstractmethod
     def api(

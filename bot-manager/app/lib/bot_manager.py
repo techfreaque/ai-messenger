@@ -2,14 +2,14 @@ import asyncio
 import logging
 import threading
 
-from app.lib.connectors import ConnectorManager
 from app.lib.logger import setup_logger
 from app.lib.messaging.message_received import ReceiveChatMessage
 from app.lib.messaging.message_send import SendChatMessageResponse
 from app.lib.messaging.room import ChatRoom
 from app.lib.messaging.room_users import ChatRoomUsers
 from app.lib.messaging.rooms import ChatRooms
-from app.lib.scheduler import WakeUpScheduler
+from app.lib.plugins import PluginManager
+from app.lib.scheduler import Scheduler
 from app.lib.storage.storage import Storage
 from app.lib.web_server import WebServer
 from profiles.default import Profile
@@ -23,123 +23,108 @@ class BotManager:
         )
         self.threads: list[threading.Thread] = []
         self.data_lock = threading.Lock()
-        self.should_dream: threading.Event = threading.Event()
 
-        self.connector_manager: ConnectorManager = ConnectorManager(self)
+
+        self.plugin_manager: PluginManager = PluginManager(self)
         self.storage = Storage()
         self.profile: Profile = Profile()
         self.web_server: WebServer = WebServer(self)
-        self.scheduler: WakeUpScheduler = WakeUpScheduler(self)
+        self.scheduler: Scheduler = Scheduler(self)
 
     def run_startup_tasks(self) -> None:
         """
-        Start all loaded connectors by calling their 'listen' method.
+        Start all loaded plugins by calling their 'listen' method.
         """
-        for name, connector in self.connector_manager.connectors.items():
-            if self.connector_manager.is_overridden(connector, "on_startup"):
-                self.logger.info(f"Starting bot connector {name}...")
+        for name, plugin in self.plugin_manager.plugins.items():
+            if self.plugin_manager.is_overridden(plugin, "on_startup"):
+                self.logger.info(f"Starting bot plugin {name}...")
 
-                def listener():
+                def _on_startup():
                     try:
-                        asyncio.run(connector.on_startup())
+                        asyncio.run(plugin.on_startup())
                     except Exception as e:
                         self.logger.exception(
-                            f"Bot connector {name} exited with an error: {e}"
+                            f"Bot plugin {name} exited with an error: {e}"
                         )
 
-                thread = threading.Thread(target=listener)
+                thread = threading.Thread(target=_on_startup)
                 thread.start()
                 self.threads.append(thread)
-                self.logger.info(f"Started bot connector {name}...")
+                self.logger.info(f"Started bot plugin {name}...")
 
-    # def start_dreaming(self) -> None:
-    #     self.should_dream.set()
-    # for name, connector in self.connectors.items():
-    #     if self.is_overridden(connector, "dream"):
-    #         self.logger.info(f"Start dreaming on {name}...")
 
-    #         def listener():
-    #             try:
-    #                 asyncio.run(connector.dream())
-    #             except Exception as e:
-    #                 self.logger.exception(f"Bot connector {name} exited with an error: {e}")
-
-    #         thread = threading.Thread(target=listener)
-    #         thread.start()
-    #         self.threads.append(thread)
-    #         self.logger.info(f"Started dreaming on {name}...")
 
     async def send_message(
         self, message: str, room_id: str, user_id: str | None
     ) -> SendChatMessageResponse:
-        for connector in self.connector_manager.connectors.values():
-            if self.connector_manager.is_overridden(connector, "send_message"):
-                # currently only one send message connector allowed
-                return await connector.send_message(
+        for plugin in self.plugin_manager.plugins.values():
+            if self.plugin_manager.is_overridden(plugin, "send_message"):
+                # currently only one send message plugin allowed
+                return await plugin.send_message(
                     message=message, room_id=room_id, user_id=user_id
                 )
-        error = "Not able to send message, no connector with a send_message method found"
+        error = "Not able to send message, no plugin with a send_message method found"
         self.logger.info(error)
         raise RuntimeError(error)
 
     async def get_rooms_list(self):
         room_list: ChatRooms = ChatRooms()
-        for connector in self.connector_manager.connectors.values():
-            if self.connector_manager.is_overridden(
-                connector, "get_rooms_list"
+        for plugin in self.plugin_manager.plugins.values():
+            if self.plugin_manager.is_overridden(
+                plugin, "get_rooms_list"
             ):
                 room_list.chat_rooms += (
-                    await connector.get_rooms_list()
+                    await plugin.get_rooms_list()
                 ).chat_rooms
         return room_list
 
     async def get_room_history(
         self, room_id: str, start: int, to: int
     ) -> ChatRoom:
-        for connector in self.connector_manager.connectors.values():
-            if self.connector_manager.is_overridden(
-                connector, "get_room_history"
+        for plugin in self.plugin_manager.plugins.values():
+            if self.plugin_manager.is_overridden(
+                plugin, "get_room_history"
             ):
-                # currently only one get_room_history connector allowed
-                return await connector.get_room_history(room_id, start, to)
-        error = "Not able to get room history, no connector with a get_room_history method found"
+                # currently only one get_room_history plugin allowed
+                return await plugin.get_room_history(room_id, start, to)
+        error = "Not able to get room history, no plugin with a get_room_history method found"
         self.logger.info(error)
         raise RuntimeError(error)
 
     async def get_users(self, room_id: str) -> ChatRoomUsers:
-        for connector in self.connector_manager.connectors.values():
-            if self.connector_manager.is_overridden(connector, "get_users"):
-                # currently only one get_users connector allowed
-                return await connector.get_users(room_id)
-        error = "Not able to get room history, no connector with a get_room_history method found"
+        for plugin in self.plugin_manager.plugins.values():
+            if self.plugin_manager.is_overridden(plugin, "get_users"):
+                # currently only one get_users plugin allowed
+                return await plugin.get_users(room_id)
+        error = "Not able to get room history, no plugin with a get_room_history method found"
         self.logger.info(error)
         raise RuntimeError(error)
 
     def execute_new_message_callback(
-        self, room: ChatRoom, message: ReceiveChatMessage
+        self, message: ReceiveChatMessage
     ) -> list[threading.Thread]:
         """
-        can be triggered by other connectors e.g. matrix connector
+        can be triggered by other plugins e.g. matrix plugin
         """
         threads: list[threading.Thread] = []
-        for name, connector in self.connector_manager.connectors.items():
-            if self.connector_manager.is_overridden(
-                connector, "new_message_callback"
+        for name, plugin in self.plugin_manager.plugins.items():
+            if self.plugin_manager.is_overridden(
+                plugin, "new_message_callback"
             ):
-                self.logger.info(f"Starting bot connector {name}...")
+                self.logger.info(f"Starting bot plugin {name}...")
 
                 def listener():
                     try:
                         asyncio.run(
-                            connector.new_message_callback(room, message)
+                            plugin.new_message_callback(message)
                         )
                     except Exception as e:
                         self.logger.exception(
-                            f"Bot connector {name} exited with an error: {e}"
+                            f"Bot plugin {name} exited with an error: {e}"
                         )
 
                 thread = threading.Thread(target=listener)
                 thread.start()
                 threads.append(thread)
-                self.logger.info(f"Started bot connector {name}...")
+                self.logger.info(f"Started bot plugin {name}...")
         return threads

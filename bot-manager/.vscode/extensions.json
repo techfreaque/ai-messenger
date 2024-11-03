@@ -1,0 +1,12 @@
+{
+    "recommendations": [
+        "mikoz.black-py",
+        "streetsidesoftware.code-spell-checker",
+        "ms-python.isort",
+        "ms-python.vscode-pylance",
+        "ms-python.python",
+        "donjayamanne.python-environment-manager",
+        "donjayamanne.python-extension-pack",
+        "gruntfuggly.todo-tree"
+    ]
+}

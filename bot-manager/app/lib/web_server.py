@@ -24,26 +24,26 @@ class WebServer:
         self.logger.info(
             f"Starting web server on port: {self.bot.storage.bot_config.web_interface_port}"
         )
-        self.init_web_server_connectors()
+        self.init_web_server_plugins()
         self.app.run(
             host="0.0.0.0",
             port=self.bot.storage.bot_config.web_interface_port,
             debug=False,
         )
 
-    def init_web_server_connectors(self) -> None:
+    def init_web_server_plugins(self) -> None:
         """
-        Initializes connectors with api's
+        Initializes plugins with api's
         """
         log = logging.getLogger('werkzeug')
         log.setLevel(logging.ERROR)
-        for name, connector in self.bot.connector_manager.connectors.items():
-            if self.bot.connector_manager.is_overridden(connector, "api"):
-                self.logger.info(f"Starting api connector {name}...")
+        for name, plugin in self.bot.plugin_manager.plugins.items():
+            if self.bot.plugin_manager.is_overridden(plugin, "api"):
+                self.logger.info(f"Starting api plugin {name}...")
                 try:
-                    connector.api()
-                    self.logger.info(f"Started api connector {name}...")
+                    plugin.api()
+                    self.logger.info(f"Started api plugin {name}...")
                 except Exception as e:
                     self.logger.exception(
-                        f"Failed to start api on {name} connector, error: {e}"
+                        f"Failed to start api on {name} plugin, error: {e}"
                     )

@@ -1,7 +1,7 @@
-from app.lib.connectors.connector_base import ConnectorBase
+from app.lib.plugins.plugin_base import PluginBase
 
 
-class Connector(ConnectorBase):
+class Plugin(PluginBase):
     def api(self) -> None:
         @self.bot.web_server.app.route(
             '/',

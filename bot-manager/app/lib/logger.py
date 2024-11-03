@@ -23,7 +23,7 @@ class ColoredFormatter(logging.Formatter):
         logging.CRITICAL: Fore.MAGENTA,
     }
 
-    def format(self, record):
+    def format(self, record): # type: ignore
         """
         Override the default format method to inject colors into the log messages and stack traces.
         """

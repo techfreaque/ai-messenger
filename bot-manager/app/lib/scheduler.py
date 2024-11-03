@@ -16,18 +16,19 @@ class WakeUpScheduleType(Enum):
     planned = "planned"
 
 
-class WakeUpScheduler:
+class Scheduler:
     def __init__(self, bot: "BotManager"):
         self.bot: "BotManager" = bot
         self.logger = setup_logger(
-            "WakeUpScheduler",
+            "Scheduler",
             logging.DEBUG,
         )
         self.scheduled_wakeup: WakeUpSchedule = WakeUpSchedule(
-            type=WakeUpScheduleType.timeout
+            type=WakeUpScheduleType.planned, sleep_time=0  # start right away
         )
+        self.should_dream: threading.Event = threading.Event()
 
-    def start_wakeup_scheduler(self) -> None:
+    def start_scheduler(self) -> None:
         """
         Makes sure the bot wakes up according to the schedule
         """
@@ -43,22 +44,19 @@ class WakeUpScheduler:
 
     async def _wakeup_schedule_main_loop(self) -> None:
         while True:
-            if (
-                self.scheduled_wakeup
-                and self.scheduled_wakeup.wakeup_time < time.time()
-            ):
+            if self.scheduled_wakeup.wakeup_time < time.time():
                 for (
                     name,
-                    connector,
-                ) in self.bot.connector_manager.connectors.items():
-                    if self.bot.connector_manager.is_overridden(
-                        connector, "on_scheduled_wakeup"
+                    plugin,
+                ) in self.bot.plugin_manager.plugins.items():
+                    if self.bot.plugin_manager.is_overridden(
+                        plugin, "on_scheduled_wakeup"
                     ):
                         self.logger.info(
                             f"Executing scheduled wakeup on {name}..."
                         )
                         try:
-                            await connector.on_scheduled_wakeup()
+                            await plugin.on_scheduled_wakeup()
                         except Exception as e:
                             self.logger.exception(
                                 f"Scheduled wakeup on {name} exited with an error: {e}"
@@ -67,10 +65,36 @@ class WakeUpScheduler:
                     type=WakeUpScheduleType.timeout
                 )
             else:
-                self.logger.info(
-                    f"Scheduler running - next wakeup in {round((time.time() - self.scheduled_wakeup.wakeup_time)*-1 / 60 / 60, 1)} hours"
-                )
-                await asyncio.sleep(60)
+                if self.should_dream.is_set():
+                    self.logger.info(
+                        f"Still dreaming - next wakeup in {round((time.time() - self.scheduled_wakeup.wakeup_time)*-1 / 60 / 60, 1)} hours"
+                    )
+                    await asyncio.sleep(60)
+                else:
+                    self.logger.info(
+                        f"Starting dreaming - next wakeup in {round((time.time() - self.scheduled_wakeup.wakeup_time)*-1 / 60 / 60, 1)} hours"
+                    )
+                    self.should_dream.set()
+                    self.start_dreaming()
+
+    def start_dreaming(self) -> None:
+        self.should_dream.set()
+        for name, plugin in self.bot.plugin_manager.plugins.items():
+            if self.bot.plugin_manager.is_overridden(plugin, "dream"):
+                self.logger.info(f"Start dreaming on {name}...")
+
+                def dream():
+                    try:
+                        asyncio.run(plugin.dream())
+                    except Exception as e:
+                        self.logger.exception(
+                            f"Bot plugin {name} exited dreaming with an error: {e}"
+                        )
+
+                thread = threading.Thread(target=dream)
+                thread.start()
+                self.bot.threads.append(thread)
+                self.logger.info(f"Started dreaming on {name}...")
 
 
 class WakeUpSchedule:
