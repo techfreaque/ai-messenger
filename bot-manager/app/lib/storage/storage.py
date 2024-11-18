@@ -1,10 +1,16 @@
 import json
 import logging
 from pathlib import Path
+from typing import TypedDict
 
 from app.lib.logger import setup_logger
-from app.lib.storage.bot_memory import BotMemory
-from app.lib.storage.config import Config
+from app.lib.storage.bot_memory import BotMemory, BotMemoryDict
+from app.lib.storage.config import Config, ConfigDict
+
+
+class StorageDict(TypedDict):
+    bot_config: ConfigDict
+    bot_memory: BotMemoryDict
 
 
 class Storage:
@@ -23,6 +29,12 @@ class Storage:
 
         self.load_data()
         self.store_data()
+
+    def to_dict(self) -> StorageDict:
+        return {
+            "bot_config": self.bot_config.to_dict(),
+            "bot_memory": self.bot_memory.to_dict(),
+        }
 
     def load_data(self):
         """Load both config and memory data."""

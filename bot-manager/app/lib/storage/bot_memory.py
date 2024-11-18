@@ -89,6 +89,21 @@ class BotMemory:
     mind_map: Optional[str] = None
     messages: dict[int, ModelMessage] = field(default_factory=dict)
 
+    def get_last_n_messages(self, n: int) -> list[ModelMessageDict]:
+        # Step 1: Sort the timestamps in descending order
+        sorted_timestamps_desc = sorted(self.messages.keys(), reverse=True)
+        length: int = len(sorted_timestamps_desc)
+        _n: int = length if length < n else n
+        newest_timestamps = sorted_timestamps_desc[:_n]
+
+        # from oldest to newest
+        newest_timestamps_sorted = sorted(newest_timestamps)
+        newest_messages_ordered = [
+            self.messages[timestamp].to_dict()
+            for timestamp in newest_timestamps_sorted
+        ]
+        return newest_messages_ordered
+
     @staticmethod
     def logger():
         return setup_logger(
@@ -131,7 +146,7 @@ class BotMemory:
         messages: dict[int, ModelMessage] = {}
         raw_messages: dict[int, ModelMessageDict] = data.get("messages", {})
         for timestamp, message in raw_messages.items():
-            messages[timestamp] = ModelMessage.from_dict(message)
+            messages[int(timestamp)] = ModelMessage.from_dict(message)
         return BotMemory(
             periodic_summaries=periodic_summaries,
             messages=messages,
@@ -146,7 +161,7 @@ class BotMemory:
             for period, summaries in self.periodic_summaries.items()
         }
         serialized_messages = {
-            timestamp: message.to_dict()
+            int(timestamp): message.to_dict()
             for timestamp, message in self.messages.items()
         }
         return {

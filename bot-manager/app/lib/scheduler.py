@@ -103,8 +103,12 @@ class WakeUpSchedule:
         sleep_time: int | None = None,
         type: WakeUpScheduleType = WakeUpScheduleType.planned,
     ) -> None:
+        default_sleep_time = 24 * 60 * 60
         self.type: WakeUpScheduleType = type
         self.wakeup_time: int = int(
             time.time()
-            + (sleep_time if sleep_time is not None else 24 * 60 * 60)
+            + (sleep_time if sleep_time is not None else default_sleep_time)
+        )
+        self.sleep_time: int = (
+            default_sleep_time if sleep_time is None else sleep_time
         )

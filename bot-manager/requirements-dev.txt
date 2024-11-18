@@ -2,7 +2,8 @@ requests
 matrix-nio
 
 flask
-gunicorn
+flask_login
+flask_cors
 
 
 # type checking linting etc.

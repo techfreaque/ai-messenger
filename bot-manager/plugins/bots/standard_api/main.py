@@ -1,14 +1,15 @@
 import asyncio
 import datetime
 import json
-import re
 from enum import Enum
 from typing import Literal, Tuple, TypedDict
 
 import requests
 
+from app.lib.messaging.bot_profile import SetUserNameResponse
 from app.lib.messaging.message_received import ReceiveChatMessage
 from app.lib.messaging.message_send import SendChatMessageResponse
+from app.lib.messaging.rooms import ChatRooms
 from app.lib.model_commands_parser import ModelCommandsParser
 from app.lib.plugins.plugin_base import PluginBase
 from app.lib.scheduler import WakeUpSchedule, WakeUpScheduleType
@@ -41,15 +42,21 @@ class Plugin(PluginBase):
         )
 
     async def on_scheduled_wakeup(self) -> None:
-        await self._send_and_respond_to_model(
-            message_content=(
-                self.bot.profile.time_out_wakeup
-                if self.scheduled_wakeup.type == WakeUpScheduleType.planned
-                else self.bot.profile.no_activity
+        if len(self.bot.storage.bot_memory.get_last_n_messages(1)) == 1:
+            await self._send_and_respond_to_model(
+                message_content=(
+                    self.bot.profile.time_out_wakeup.format(
+                        time=self.bot.scheduler.scheduled_wakeup.sleep_time
+                    )
+                    if self.bot.scheduler.scheduled_wakeup.type
+                    == WakeUpScheduleType.planned
+                    else self.bot.profile.no_activity
+                )
             )
-        )
+        else:
+            await self._send_initial_message_to_model()
 
-    async def on_startup(self):
+    async def _send_initial_message_to_model(self):
         await self._send_and_respond_to_model(
             message_content=self.bot.profile.get_initial_prompt(
                 bot_name=self.bot.storage.bot_config.bot_name
@@ -72,6 +79,17 @@ class Plugin(PluginBase):
                 message_content=self.bot.profile.bot_name_already_exits
             )
         else:
+            response: SetUserNameResponse = await self.bot.set_chat_user_name(
+                # TODO sanitize bot_name
+                bot_name
+            )
+            if response.error_message:
+                await self._send_and_respond_to_model(
+                    message_content=self.bot.profile.bot_name_error_setting_name_on_chat_app.format(
+                        error=response.error_message
+                    )
+                )
+                return
             self.bot.storage.bot_config.bot_name = bot_name
             self.bot.storage.store_data()
             await self._get_my_name()
@@ -87,7 +105,7 @@ class Plugin(PluginBase):
         await self._send_and_respond_to_model(message_content=response)
 
     async def _timeout(self, seconds: int) -> None:
-        self.scheduled_wakeup = WakeUpSchedule(
+        self.bot.scheduler.scheduled_wakeup = WakeUpSchedule(
             sleep_time=seconds, type=WakeUpScheduleType.planned
         )
 
@@ -109,10 +127,10 @@ class Plugin(PluginBase):
         await self._send_and_respond_to_model(message_content=response)
 
     async def _request_rooms_list(self):
-        rooms = self.bot.get_rooms_list()
+        rooms: ChatRooms = await self.bot.get_rooms_list()
         await self._send_and_respond_to_model(
             message_content=self.bot.profile.get_rooms_list.format(
-                rooms=json.dumps(rooms)
+                rooms=str(rooms.get_room_list())
             )
         )
 
@@ -226,6 +244,8 @@ class Plugin(PluginBase):
     async def _send_and_respond_to_model(
         self, message_content: str, role: Roles = Roles.SYSTEM
     ) -> Tuple[bool, str | None]:
+        self.logger.info(f"Sending new message to model: {message_content}")
+        # TODO store and restore
         self.bot.scheduler.scheduled_wakeup = WakeUpSchedule(
             sleep_time=self.bot.storage.bot_config.bot_timeout,
             type=WakeUpScheduleType.planned,
@@ -233,7 +253,6 @@ class Plugin(PluginBase):
         self.bot.storage.bot_memory.add_message(
             role=role, content=message_content
         )
-        self.logger.info(f"Sending new message to model: {message_content}")
         self.bot.storage.store_data()
         headers = {
             "Content-Type": "application/json",
@@ -242,8 +261,13 @@ class Plugin(PluginBase):
 
         data = {
             "model": self.bot.storage.bot_config.model_name,
-            "messages": [{"role": "user", "content": message_content}],
+            "messages": [
+                *self.bot.storage.bot_memory.get_last_n_messages(5),
+                {"role": Roles.SYSTEM.value, "content": message_content},
+            ],
         }
+        return False, None
+        
         try:
             response = requests.post(
                 self.bot.storage.bot_config.model_api_url,
@@ -253,15 +277,18 @@ class Plugin(PluginBase):
 
             if response.status_code == 200:
                 model_response: ModelResponseDict = response.json()
-                self.logger.info(
-                    "Model response JSON:", json.dumps(model_response)
-                )
-                message: str = model_response["choices"][0]["message"]
+                self.logger.info(f"Model response JSON: {model_response}")
+                message: str = model_response["choices"][0]["message"][
+                    "content"
+                ]
                 self.bot.storage.bot_memory.add_message(
                     role=Roles.ASSISTANT, content=message
                 )
+                self.bot.storage.store_data()
                 await self.parser.parse_command(
-                    message, self._on_command_not_valid
+                    plugin=self,
+                    command=message,
+                    on_command_not_valid=self._on_command_not_valid,
                 )
 
                 return True, message
@@ -275,9 +302,11 @@ class Plugin(PluginBase):
             )
         return False, None
 
-    async def _on_command_not_valid(self):
+    async def _on_command_not_valid(self, error_message: str) -> None:
         await self._send_and_respond_to_model(
-            message_content=self.bot.profile.prompt_not_found
+            message_content=self.bot.profile.prompt_not_valid.format(
+                error_message=error_message
+            )
         )
 
 

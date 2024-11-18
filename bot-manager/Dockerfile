@@ -15,4 +15,4 @@ EXPOSE 8000
 
 # Set the entrypoint to run Gunicorn with your application
 # Adjust the module path `app:app` to match your actual module and app name.
-CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:8000", "main_app:app"]
+CMD python start.py

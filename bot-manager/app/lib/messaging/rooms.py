@@ -17,3 +17,6 @@ class ChatRooms:
         self.chat_rooms.append(
             ChatRoom(room_users, room_history, name, room_id)
         )
+
+    def get_room_list(self) -> list[str]:
+        return [room.get_base_info() for room in self.chat_rooms]

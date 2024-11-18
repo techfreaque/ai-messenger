@@ -3,6 +3,7 @@ from abc import abstractmethod
 from typing import TYPE_CHECKING
 
 from app.lib.logger import setup_logger
+from app.lib.messaging.bot_profile import SetUserNameResponse
 from app.lib.messaging.message_received import ReceiveChatMessage
 from app.lib.messaging.message_send import SendChatMessageResponse
 from app.lib.messaging.room import ChatRoom
@@ -73,6 +74,12 @@ class PluginBase:
     ##
     ## functions that the model can directly trigger
     ##
+    @abstractmethod
+    async def set_chat_user_name(self, new_name: str) -> SetUserNameResponse:
+        """
+        Gets called when the model wants to set/change its user name
+        """
+
     @abstractmethod
     async def send_message(
         self, message: str, room_id: str, user_id: str | None

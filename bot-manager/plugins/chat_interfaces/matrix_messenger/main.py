@@ -8,6 +8,10 @@ from nio import (  # type: ignore
     JoinedRoomsError,
     JoinedRoomsResponse,
     MatrixRoom,
+    ProfileGetDisplayNameError,
+    ProfileGetDisplayNameResponse,
+    ProfileSetDisplayNameError,
+    ProfileSetDisplayNameResponse,
     RoomGetStateError,
     RoomGetStateResponse,
     RoomMember,
@@ -19,6 +23,7 @@ from nio import (  # type: ignore
 )
 
 from app.lib.bot_manager import BotManager
+from app.lib.messaging.bot_profile import SetUserNameResponse
 from app.lib.messaging.message_received import ReceiveChatMessage
 from app.lib.messaging.message_send import (
     SendChatMessageResponse,
@@ -29,13 +34,6 @@ from app.lib.messaging.room_users import ChatRoomUsers
 from app.lib.messaging.rooms import ChatRooms
 from app.lib.plugins.plugin_base import PluginBase
 
-# Matrix client settings
-matrix_user: str = "freaque"
-matrix_password: str = ".4-kC6FxwB:QVm3"
-matrix_homeserver: str = (
-    "https://matrix.org"  # Or your specific Matrix server URL
-)
-
 MessageContent = dict[
     str, str
 ]  # Represents a single message with sender and content
@@ -44,7 +42,6 @@ MessageContent = dict[
 class Plugin(PluginBase):
     def __init__(self, bot: BotManager, plugin_name: str) -> None:
         super().__init__(bot, plugin_name)
-        self.client: AsyncClient = AsyncClient(matrix_homeserver, matrix_user)
         self.rooms: dict[
             str, dict[str, list[MessageContent] | RoomGetStateResponse]
         ] = {}
@@ -68,18 +65,33 @@ class Plugin(PluginBase):
 
     async def on_startup(self) -> None:
         self.logger.info("Starting Matrix Client")
-        await self.client.login(matrix_password)
-        await self.get_rooms_list()
+        if (
+            self.bot.storage.bot_config.matrix_user_name
+            and self.bot.storage.bot_config.matrix_server
+            and self.bot.storage.bot_config.matrix_user_password
+        ):
+            self.client: AsyncClient = AsyncClient(
+                self.bot.storage.bot_config.matrix_server,
+                self.bot.storage.bot_config.matrix_user_name,
+            )
+            await self.client.login(
+                self.bot.storage.bot_config.matrix_user_password
+            )
+            await self.get_rooms_list()
 
-        self.client.add_event_callback(
-            self._room_message_callback, RoomMessageText
-        )
+            self.client.add_event_callback(
+                self._room_message_callback, RoomMessageText
+            )
 
-        # Start the sync loop to keep the client active and responsive
-        await self.client.sync_forever(
-            # timeout=30000
-        )
-        self.logger.info("Started Matrix Client")
+            # Start the sync loop to keep the client active and responsive
+            await self.client.sync_forever(
+                # timeout=30000
+            )
+            self.logger.info("Started Matrix Client")
+        else:
+            self.logger.error(
+                "Missing matrix user name, password and/or server"
+            )
 
     async def send_message(
         self, message: str, room_id: str, user_id: str | None
@@ -158,12 +170,32 @@ class Plugin(PluginBase):
     async def _fetch_room_info(
         self, room_id: str
     ) -> RoomGetStateResponse | None:
+        self.client.set_displayname
         response: RoomGetStateResponse | RoomGetStateError = (
             await self.client.room_get_state(room_id)
         )
         if isinstance(response, RoomGetStateResponse):
             return response
         return None
+
+    async def set_chat_user_name(self, new_name: str) -> SetUserNameResponse:
+        change_response: (
+            ProfileSetDisplayNameResponse | ProfileSetDisplayNameError
+        ) = await self.client.set_displayname(
+            f"{new_name} (bot)"  # dont lie plz
+        )
+        if isinstance(change_response, ProfileSetDisplayNameResponse):
+            response: (
+                ProfileGetDisplayNameResponse | ProfileGetDisplayNameError
+            ) = await self.client.get_displayname()
+            if isinstance(response, ProfileGetDisplayNameResponse):
+                return SetUserNameResponse(name=new_name, error_message=None)
+            return SetUserNameResponse(
+                name=new_name, error_message=response.message
+            )
+        return SetUserNameResponse(
+            name=new_name, error_message=change_response.message
+        )
 
     async def _fetch_room_messages(
         self, room_id: str, limit: int

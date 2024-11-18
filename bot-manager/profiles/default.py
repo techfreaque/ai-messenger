@@ -1,3 +1,6 @@
+from app.lib.storage.bot_memory import Periods
+
+
 class Profile:
     def get_initial_prompt(self, bot_name: str | None):
         return f"""
@@ -16,7 +19,7 @@ class Profile:
                 Important: Use only these commands and adhere to the correct syntax in every response. Please read each command's requirements carefully.
 
                 help() — Displays this guide.
-                set_my_name(name: string) — Assigns a unique and entertaining name for yourself as your first command (e.g., "ChatMaster3000"). This command can only be used once at the start.
+                {"set_my_name(name: string) — Assigns a unique and entertaining name for yourself as your first command (e.g., ChatMaster3000). This command can only be used once at the start." if not bot_name else ""}
                 get_my_name() — Retrieves your assigned name if forgotten.
                 timeout(seconds: number) — Pauses activity for a specified duration and automatically resumes with a "wake up" message.
                 send_message(message: string, receiver_user_id?: string, receiver_room_id?: string) — Sends a message to a user or group. At least one of receiver_user_id or receiver_room_id must be specified.
@@ -36,7 +39,7 @@ class Profile:
                 Track Follow-ups — Use a method to highlight important messages for follow-up tasks.
                 Monitor Engagement — Keep track of user activity and prompt quieter participants to engage as necessary.
 
-            Reminder: Start by setting your name with set_my_name().
+            Reminder: Start by using any command
 
         """
 
@@ -81,6 +84,12 @@ class Profile:
         self.summary_stored: str = """
             summary stored successfully
         """
+        self.store_summary_malformed_interval: str = f"""
+            the interval is not valid, valid are: {', '.join([period.name for period in Periods])}
+        """
+        self.store_summary_malformed_start_time: str = """
+            start time is invalid, should be Y-m-d
+        """
 
         self.mind_map_stored: str = """
             mind_map stored successfully
@@ -88,6 +97,10 @@ class Profile:
 
         self.bot_name_already_exits: str = """"
             error: name already taken
+        """
+        self.bot_name_error_setting_name_on_chat_app: str = """"
+            error setting name on chat app:
+            {error}
         """
         self.bot_name_not_set: str = """"
             error: name already taken
@@ -104,8 +117,8 @@ class Profile:
         self.room_not_found: str = """"
             receiver_room_id not found
         """
-        self.prompt_not_found: str = """
-            error: command not found
+        self.prompt_not_valid: str = """
+            error: {error_message}
             You are an AI assistant please use the proper syntax
             answer with "help()" if you want to see the available commands
         """
