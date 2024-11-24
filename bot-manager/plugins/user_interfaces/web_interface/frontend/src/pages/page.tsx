@@ -1,8 +1,8 @@
-import { useAuthStore } from "../state/authStore";
+import { useBotStore } from "../state/botStore";
 import { ContentContainer, ContentLayout } from "../Widgets/ContentLayout";
 
 export default function HomePage(): JSX.Element {
-  const { isLoggedIn } = useAuthStore();
+  const { isLoggedIn } = useBotStore();
   return (
     <ContentLayout>
       <ContentContainer>

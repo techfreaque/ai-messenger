@@ -2,15 +2,15 @@ from app.lib.storage.bot_memory import Periods
 
 
 class Profile:
-    def get_initial_prompt(self, bot_name: str | None):
+    def get_initial_prompt(self, bot_name: str | None) -> str:
         return f"""
             You are an AI assistant in a messaging app with a dynamic number of participants, including both humans and bots.
             Below are your available commands and guidelines for managing conversations effectively.
 
-            {f"""
+            {f'''
                 Your Name:
                 {bot_name}
-            """ if bot_name else ""
+            ''' if bot_name else ""
             }
             
 

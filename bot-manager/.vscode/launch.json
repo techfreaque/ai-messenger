@@ -12,7 +12,9 @@
             "program": "start.py",
             "console": "integratedTerminal",
             "cwd": "${workspaceFolder}",
-            "args": [],
+            "args": [
+                "--dev-mode"
+            ],
             "justMyCode": true
         },
     ]

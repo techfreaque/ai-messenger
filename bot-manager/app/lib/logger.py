@@ -2,6 +2,7 @@ import logging
 import logging.handlers
 import sys
 from pathlib import Path
+
 from colorama import Fore, Style, init
 
 # Initialize colorama
@@ -23,7 +24,7 @@ class ColoredFormatter(logging.Formatter):
         logging.CRITICAL: Fore.MAGENTA,
     }
 
-    def format(self, record): # type: ignore
+    def format(self, record):  # type: ignore
         """
         Override the default format method to inject colors into the log messages and stack traces.
         """
@@ -44,9 +45,8 @@ class ColoredFormatter(logging.Formatter):
                 f"{log_color}{exc_msg}{Style.RESET_ALL}" if exc_msg else ''
             )
             return f"{colored_main}\n{colored_exc}"
-        else:
-            # If no exception, color the entire formatted message
-            return f"{log_color}{formatted}{Style.RESET_ALL}"
+        # If no exception, color the entire formatted message
+        return f"{log_color}{formatted}{Style.RESET_ALL}"
 
 
 def setup_logger(

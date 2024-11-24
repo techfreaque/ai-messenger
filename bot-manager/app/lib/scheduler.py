@@ -12,19 +12,19 @@ from app.lib.logger import setup_logger
 
 
 class WakeUpScheduleType(Enum):
-    timeout = "timeout"
-    planned = "planned"
+    TIMEOUT = "timeout"
+    PLANNED = "planned"
 
 
 class Scheduler:
-    def __init__(self, bot: "BotManager"):
+    def __init__(self, bot: "BotManager") -> None:
         self.bot: "BotManager" = bot
         self.logger = setup_logger(
             "Scheduler",
             logging.DEBUG,
         )
         self.scheduled_wakeup: WakeUpSchedule = WakeUpSchedule(
-            type=WakeUpScheduleType.planned, sleep_time=0  # start right away
+            type=WakeUpScheduleType.PLANNED, sleep_time=0  # start right away
         )
         self.should_dream: threading.Event = threading.Event()
 
@@ -34,7 +34,7 @@ class Scheduler:
         """
         self.logger.info(f"Starting wakeup scheduler...")
 
-        def _wakeup_schedule_main_loop():
+        def _wakeup_schedule_main_loop() -> None:
             asyncio.run(self._wakeup_schedule_main_loop())
 
         thread = threading.Thread(target=_wakeup_schedule_main_loop)
@@ -62,7 +62,7 @@ class Scheduler:
                                 f"Scheduled wakeup on {name} exited with an error: {e}"
                             )
                 self.scheduled_wakeup = WakeUpSchedule(
-                    type=WakeUpScheduleType.timeout
+                    type=WakeUpScheduleType.TIMEOUT
                 )
             else:
                 if self.should_dream.is_set():
@@ -83,7 +83,7 @@ class Scheduler:
             if self.bot.plugin_manager.is_overridden(plugin, "dream"):
                 self.logger.info(f"Start dreaming on {name}...")
 
-                def dream():
+                def dream() -> None:
                     try:
                         asyncio.run(plugin.dream())
                     except Exception as e:
@@ -101,7 +101,7 @@ class WakeUpSchedule:
     def __init__(
         self,
         sleep_time: int | None = None,
-        type: WakeUpScheduleType = WakeUpScheduleType.planned,
+        type: WakeUpScheduleType = WakeUpScheduleType.PLANNED,
     ) -> None:
         default_sleep_time = 24 * 60 * 60
         self.type: WakeUpScheduleType = type

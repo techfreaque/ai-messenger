@@ -13,7 +13,7 @@ if TYPE_CHECKING:
 
 
 class WebServer:
-    def __init__(self, bot: "BotManager") -> None:
+    def __init__(self, bot: "BotManager", dev_mode: bool) -> None:
         self.bot: "BotManager" = bot
         self.logger = setup_logger(
             "WebServer",
@@ -28,8 +28,8 @@ class WebServer:
         app.config['SESSION_COOKIE_SECURE'] = True  # Needed for SameSite=None
         app.config['SESSION_PERMANENT'] = True
         app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=1)
-        self.app = app
-        self.login_manager: WebLoginManager = WebLoginManager()
+        self.app: Flask = app
+        self.login_manager: WebLoginManager = WebLoginManager(dev_mode)
 
     def start_web_server(
         self,

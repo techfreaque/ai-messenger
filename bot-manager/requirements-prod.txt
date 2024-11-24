@@ -1,5 +1,6 @@
-flask
+requests
+matrix-nio
 
-openai
-matrix-nio[e2e]
-python-olm
+flask
+flask_login
+flask_cors

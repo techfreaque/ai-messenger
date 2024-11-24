@@ -1,3 +1,6 @@
 **/__pycache__/
 dist/
 user
+.venv
+build
+.mypy_cache

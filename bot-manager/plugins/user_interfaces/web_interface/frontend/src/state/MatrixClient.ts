@@ -91,20 +91,18 @@ export const useMatrixClient = create<MatrixClientContextType>((set, get) => ({
     set((state) => {
       const newState = { ...state };
       const room = newState.rooms[roomState.roomId];
-      if (!room) {
-        // throw new Error("Room not initialized yet");
-        newState.rooms[roomState.roomId] = {
-          roomId: roomState.roomId,
-          roomState,
-          messages: [roomState],
-          info: [],
-        };
+      if (room) {
+        room.roomState = roomState;
+        room.messages = [...room.messages, roomState];
+      } else {
+        throw new Error("Room not initialized yet");
+        // newState.rooms[roomState.roomId] = {
+        //   roomId: roomState.roomId,
+        //   roomState,
+        //   messages: [roomState],
+        //   info: [],
+        // };
       }
-      newState.rooms[roomState.roomId].roomState = roomState;
-      newState.rooms[roomState.roomId].messages = [
-        ...newState.rooms[roomState.roomId].messages,
-        roomState,
-      ];
       return newState;
     });
   },
@@ -126,24 +124,24 @@ export const useMatrixClient = create<MatrixClientContextType>((set, get) => ({
 
   loginResponse: undefined,
   loginToMatrix: async (username, password): Promise<void> => {
-    const curretnState = get();
-    if (!curretnState.client) {
+    const currentState = get();
+    if (!currentState.client) {
       throw new Error("Matrix client is not initialized!");
     }
     const loginData = await loginToMatrix(
-      curretnState.client,
+      currentState.client,
       username,
       password,
     ); // Your registration function
     localStorage.setItem("login", JSON.stringify(loginData));
     let newState: undefined | MatrixClientContextType = undefined;
     if (loginData?.access_token && loginData?.user_id) {
-      newState = await _start(curretnState.client, curretnState);
+      newState = await _start(currentState.client, currentState);
     }
     set((state) => {
       return {
         ...(newState || state),
-        client: curretnState.client,
+        client: currentState.client,
         registerResponse: loginData,
       };
     });
@@ -156,14 +154,18 @@ export const useMatrixClient = create<MatrixClientContextType>((set, get) => ({
         throw new Error("Matrix client is not initialized!");
       }
 
-      const room = state.client.getRoom(roomId);
-      if (!room) {
+      const matrixRoom = state.client.getRoom(roomId);
+      if (!matrixRoom) {
         console.error(`Room with id ${roomId} not found!`);
         return newState;
       }
-      const messages = room.getLiveTimeline().getEvents();
-      console.log("initRoom", messages);
-      newState.rooms[roomId].info = messages;
+      const messages = matrixRoom.getLiveTimeline().getEvents();
+      console.log("initRoomMessages:", messages);
+      const room = newState.rooms[roomId];
+      if (!room) {
+        throw new Error("Room not initialized yet");
+      }
+      room.info = messages;
       return newState;
       // const messages = getRoomMessages(roomId, onNewMessage);
 

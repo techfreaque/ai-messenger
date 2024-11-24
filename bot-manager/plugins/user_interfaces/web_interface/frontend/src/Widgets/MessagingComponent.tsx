@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import type { MatrixRoom } from "../state/MatrixClient";
 import { useMatrixClient } from "../state/MatrixClient";
 

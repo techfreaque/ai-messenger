@@ -4,7 +4,7 @@ from app.lib.messaging.room_users import ChatRoomUsers
 
 
 class ChatRooms:
-    def __init__(self):
+    def __init__(self) -> None:
         self.chat_rooms: list[ChatRoom] = []
 
     def add_room(
@@ -13,7 +13,7 @@ class ChatRooms:
         room_history: list[RoomHistory],
         name: str,
         room_id: str,
-    ):
+    ) -> None:
         self.chat_rooms.append(
             ChatRoom(room_users, room_history, name, room_id)
         )

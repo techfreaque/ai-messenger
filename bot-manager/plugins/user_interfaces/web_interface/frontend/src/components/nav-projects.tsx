@@ -1,5 +1,3 @@
-"use client";
-
 import { Folder, Forward, Trash2 } from "lucide-react";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import {
@@ -30,7 +28,7 @@ export function NavSettings({
 
   return (
     <SidebarGroup className='group-data-[collapsible=icon]:hidden'>
-      <SidebarGroupLabel>Settings</SidebarGroupLabel>
+      <SidebarGroupLabel>Bot Character</SidebarGroupLabel>
       <SidebarMenu>
         {settings.map((item) => (
           <SidebarMenuItem key={item.name}>

@@ -12,7 +12,7 @@ import { NavMain } from "../../components/nav-main";
 import { NavSettings } from "../../components/nav-projects";
 import { NavUser } from "./SideBarUser";
 import { IconLungs, IconPlus, IconUsersGroup } from "@tabler/icons-react";
-import { useAuthStore } from "../../state/authStore";
+import { useBotStore } from "../../state/botStore";
 
 export default function AppSidebar({
   children,
@@ -82,7 +82,7 @@ interface SideBarData {
 }
 
 function useGetSidebarData(): SideBarData {
-  const { routes } = useAuthStore();
+  const { routes } = useBotStore();
   return {
     user: {
       name: "shadcn",
@@ -154,11 +154,16 @@ function useGetSidebarData(): SideBarData {
     settings: [
       {
         name: "Bot Settings",
-        url: routes.config,
+        url: routes.frontend.config,
         icon: Settings2,
       },
       {
-        name: "Bot Character",
+        name: "Bot Mind Map",
+        url: "#",
+        icon: PieChart,
+      },
+      {
+        name: "Bot Memory",
         url: "#",
         icon: PieChart,
       },

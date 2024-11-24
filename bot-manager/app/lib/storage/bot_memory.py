@@ -6,9 +6,6 @@ from typing import Optional, TypedDict
 
 from app.lib.logger import setup_logger
 
-# TODO handle data exceptions
-undefined = "undefined"
-
 
 class Periods(Enum):
     DAILY = "daily"
@@ -105,7 +102,7 @@ class BotMemory:
         return newest_messages_ordered
 
     @staticmethod
-    def logger():
+    def logger() -> logging.Logger:
         return setup_logger(
             "ConfigManager",
             logging.DEBUG,
@@ -113,7 +110,7 @@ class BotMemory:
 
     def set_periodic_summary(
         self, interval: Periods, start_time: int, summary: str
-    ):
+    ) -> None:
         interval_summary = self.periodic_summaries.get(interval.value)
         if not interval_summary:
             self.periodic_summaries[interval.value] = {}
@@ -128,7 +125,7 @@ class BotMemory:
     ) -> PeriodicSummary | None:
         return self.periodic_summaries.get(interval.value, {}).get(start_time)
 
-    def add_message(self, role: Roles, content: str):
+    def add_message(self, role: Roles, content: str) -> None:
         self.messages[int(time.time())] = ModelMessage(role, content)
 
     @staticmethod

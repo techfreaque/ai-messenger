@@ -1,6 +1,7 @@
 import * as React from "react";
 import { ChevronRightIcon, DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { cn } from "../../lib/utils";
+import type { LinkProps } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 const Breadcrumb = React.forwardRef<
@@ -38,19 +39,18 @@ const BreadcrumbItem = React.forwardRef<
 ));
 BreadcrumbItem.displayName = "BreadcrumbItem";
 
-const BreadcrumbLink = React.forwardRef<
-  HTMLAnchorElement,
-  React.ComponentPropsWithoutRef<typeof Link> & {
-    asChild?: boolean;
-  }
->(({ className, ...props }) => {
+function BreadcrumbLink({
+  className,
+  ...props
+}: LinkProps & React.RefAttributes<HTMLAnchorElement>): JSX.Element {
   return (
     <Link
       className={cn("transition-colors hover:text-foreground", className)}
       {...props}
     />
   );
-});
+}
+
 BreadcrumbLink.displayName = "BreadcrumbLink";
 
 const BreadcrumbPage = React.forwardRef<
@@ -94,7 +94,7 @@ const BreadcrumbEllipsis = ({
     className={cn("flex h-9 w-9 items-center justify-center", className)}
     {...props}
   >
-    <DotsHorizontalIcon className='h-4 w-4' />
+    <DotsHorizontalIcon className='size-4' />
     <span className='sr-only'>More</span>
   </span>
 );

@@ -20,7 +20,7 @@ import {
   AvatarFallback,
   AvatarImage,
 } from "../../components/ui/avatar";
-import { useAuthStore } from "../../state/authStore";
+import { useBotStore } from "../../state/botStore";
 import { useNavigate } from "react-router-dom";
 
 export function NavUser({
@@ -34,7 +34,7 @@ export function NavUser({
 }): JSX.Element {
   const navigate = useNavigate();
   const { isMobile } = useSidebar();
-  const { logout, routes } = useAuthStore();
+  const { logout, routes } = useBotStore();
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -100,10 +100,10 @@ export function NavUser({
               onClick={(): void => {
                 logout()
                   .then(() => {
-                    navigate(routes.login);
+                    navigate(routes.frontend.login);
                   })
                   .catch(() => {
-                    navigate(routes.login);
+                    navigate(routes.frontend.login);
                   });
               }}
               style={{ cursor: "pointer" }}

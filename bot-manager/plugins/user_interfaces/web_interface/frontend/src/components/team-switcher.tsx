@@ -1,6 +1,3 @@
-"use client";
-
-import * as React from "react";
 import { CaretSortIcon, PlusIcon } from "@radix-ui/react-icons";
 import {
   SidebarMenu,
@@ -18,6 +15,7 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import type { SideBarBotData } from "../Widgets/SideBar/SideBarMain";
+import { useState } from "react";
 
 export function TeamSwitcher({
   bots,
@@ -25,7 +23,10 @@ export function TeamSwitcher({
   bots: SideBarBotData[];
 }): JSX.Element {
   const { isMobile } = useSidebar();
-  const [activeTeam, setActiveTeam] = React.useState(bots[0]);
+  const [activeTeam, setActiveTeam] = useState<SideBarBotData>(
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+    bots[0] as SideBarBotData,
+  );
 
   return (
     <SidebarMenu>

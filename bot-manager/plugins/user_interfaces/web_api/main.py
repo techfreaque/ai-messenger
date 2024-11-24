@@ -17,10 +17,10 @@ class Plugin(PluginBase):
         @web_server.app.route(f'{path_prefix}/config', methods=['GET'])
         @web_server.login_manager.conditional_login_required()
         def get_config() -> tuple[StorageDict, int]:  # type: ignore
-            print("Getting config: " + str(self.bot.storage.to_dict()))
+            self.logger.info("Web API requested bot storage")
             return self.bot.storage.to_dict(), 200
 
-        @web_server.app.route(f'{path_prefix}/config', methods=['PUT'])
+        @web_server.app.route(f'{path_prefix}/config', methods=['POST'])
         @web_server.login_manager.conditional_login_required()
         def update_config() -> Tuple[Union[StorageDict, Response], int]:  # type: ignore
             data = request.json
@@ -29,16 +29,4 @@ class Plugin(PluginBase):
             for key, value in data.items():
                 setattr(bot_config, key, value)
             print("Updated config:", bot_config)
-            return self.bot.storage.to_dict(), 200
-
-        @web_server.app.route(f'{path_prefix}/config', methods=['POST'])
-        @web_server.login_manager.conditional_login_required()
-        def create_config() -> tuple[StorageDict, int]:  # type: ignore
-            # TODO setup config
-            return self.bot.storage.to_dict(), 200
-
-        @web_server.app.route(f'{path_prefix}/config', methods=['DELETE'])
-        @web_server.login_manager.conditional_login_required()
-        def delete_config() -> tuple[StorageDict, int]:  # type: ignore
-            # TODO delete config
             return self.bot.storage.to_dict(), 200

@@ -17,6 +17,7 @@ class PluginManager:
             "PluginManager",
             logging.DEBUG,
         )
+        self.dev_mode: bool = bot.dev_mode
         self.plugin_types: List[str] = self.discover_plugin_types()
         self.plugins: dict[str, PluginBase] = {}
         self.load_plugins(bot)
@@ -26,7 +27,14 @@ class PluginManager:
         Discover all available plugin types by listing subdirectories in the 'plugins' directory.
         """
         plugins_base_dir: str = os.path.abspath(
-            os.path.join(os.path.dirname(__file__), "../../../plugins")
+            os.path.join(
+                os.path.dirname(__file__),
+                (
+                    "../../../plugins"
+                    if self.dev_mode
+                    else "../../../../plugins"
+                ),
+            )
         )
         plugin_types: List[str] = []
 
@@ -42,9 +50,7 @@ class PluginManager:
                 plugin_types.append(
                     item
                 )  # Each subdirectory is considered a plugin type
-        self.logger.info(
-            f"Loading plugins of types: {', '.join(plugin_types)}"
-        )
+        self.logger.info(f"Loading plugins of types: {', '.join(plugin_types)}")
         return plugin_types
 
     def load_plugin_module(self, path: str) -> Optional[ModuleType]:
@@ -52,9 +58,7 @@ class PluginManager:
         Load a Python module from the given file path.
         """
         try:
-            spec = importlib.util.spec_from_file_location(
-                "plugin_module", path
-            )
+            spec = importlib.util.spec_from_file_location("plugin_module", path)
             if spec and spec.loader:
                 module = importlib.util.module_from_spec(spec)
                 spec.loader.exec_module(module)
@@ -92,12 +96,8 @@ class PluginManager:
                         plugin_class = getattr(module, "Plugin", None)
                         try:
                             if plugin_class:
-                                plugin_instance = plugin_class(
-                                    bot, plugin_name
-                                )
-                                if isinstance(
-                                    plugin_instance, PluginBase
-                                ):
+                                plugin_instance = plugin_class(bot, plugin_name)
+                                if isinstance(plugin_instance, PluginBase):
                                     self.plugins[
                                         f"{plugin_type}_{plugin_name}"
                                     ] = plugin_instance

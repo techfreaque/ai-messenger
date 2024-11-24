@@ -1,79 +1,12 @@
-import { useEffect, useState } from "react";
-import { useAuthStore } from "../../state/authStore";
+import { useBotStore } from "../../state/botStore";
 import { ContentContainer, ContentLayout } from "../../Widgets/ContentLayout";
 import { DropdownMenuSeparator } from "../../components/ui/dropdown-menu";
 
-interface Config {
-  bot_config: {
-    id: string;
-    profile_name: string;
-    message_interface: {
-      [key: string]: string;
-    };
-    web_interface: {
-      [key: string]: string;
-    };
-    bot: {
-      [key: string]: string;
-    };
-  };
-  bot_memory: {
-    mind_map: string;
-    // eslint-disable-next-line @typescript-eslint/ban-types
-    periodic_summaries: {};
-    messages: {
-      [timestamp: string]: {
-        content: string;
-        role: "system" | "assistant" | "user";
-      };
-    };
-  };
-}
 export default function ConfigPage(): JSX.Element {
-  const { backendUrl } = useAuthStore();
-
-  const [config, setConfig] = useState<Config>();
-
-  async function getConfig(): Promise<void> {
-    const response = await fetch(`${backendUrl}/config`, {
-      credentials: "include",
-    }); // Include cookies for authentication
-    console.log("response:", response.status);
-    const responseData: Config = (await response.json()) as Config;
-    console.log("responseData:", responseData);
-    setConfig(responseData);
-  }
-  useEffect(() => {
-    void getConfig();
-  }, []);
-
-  async function updateConfig(
-    e: React.FormEvent<HTMLFormElement>,
-  ): Promise<void> {
-    e.preventDefault();
-    const response = await fetch(`${backendUrl}/config`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(config),
-      credentials: "include",
-    });
-    const updatedConfig: Config = (await response.json()) as Config;
-    console.log("Updated config:", updatedConfig);
-    setConfig(updatedConfig);
-  }
-
-  // const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-  //   setConfig({ ...config, [e.target.name]: e.target.value });
-  // };
-
+  const { config, updateConfig } = useBotStore();
   return config ? (
     <form onSubmit={void updateConfig}>
-      <div
-        className='m-4'
-        // style={{
-        //   margin: "15px",
-        // }}
-      >
+      <div className='m-4'>
         <ContentLayout>
           <>
             <div className='grid auto-rows-min gap-4 grid-cols-2 pt-5 pb-5'>

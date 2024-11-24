@@ -31,13 +31,10 @@ class Plugin(PluginBase):
         @web_server.app.route(f'{path_prefix}/')
         @web_server.app.route(f'{path_prefix}/<path:path>')
         def serve_react(path: str | None = None) -> Response:  # type: ignore
-            if (
-                path
-                and path != ""
-                and os.path.exists(os.path.join(self.REACT_BUILD_Folder, path))
+            if path and os.path.exists(
+                os.path.join(self.REACT_BUILD_Folder, path)
             ):
                 return send_from_directory(self.REACT_BUILD_Folder, path)
-            else:
-                return send_from_directory(
-                    self.REACT_BUILD_Folder, self.REACT_BUILD_FILE
-                )
+            return send_from_directory(
+                self.REACT_BUILD_Folder, self.REACT_BUILD_FILE
+            )

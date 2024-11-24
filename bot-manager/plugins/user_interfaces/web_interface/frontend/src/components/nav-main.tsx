@@ -1,5 +1,3 @@
-"use client";
-
 import { ChevronRightIcon } from "@radix-ui/react-icons";
 import {
   SidebarGroup,
@@ -32,7 +30,7 @@ export function NavMain({
           <Collapsible
             key={item.title}
             asChild
-            defaultOpen={item.isActive}
+            defaultOpen={item.isActive || false}
             className='group/collapsible'
           >
             <SidebarMenuItem>

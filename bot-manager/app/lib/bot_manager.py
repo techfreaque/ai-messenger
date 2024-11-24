@@ -17,18 +17,18 @@ from profiles.default import Profile
 
 
 class BotManager:
-    def __init__(self):
+    def __init__(self, dev_mode: bool) -> None:
         self.logger = setup_logger(
             "BotManager",
             logging.DEBUG,
         )
         self.threads: list[threading.Thread] = []
         self.data_lock = threading.Lock()
-
+        self.dev_mode: bool = dev_mode
         self.plugin_manager: PluginManager = PluginManager(self)
-        self.storage = Storage()
+        self.storage = Storage(dev_mode=dev_mode)
         self.profile: Profile = Profile()
-        self.web_server: WebServer = WebServer(self)
+        self.web_server: WebServer = WebServer(self, dev_mode)
         self.scheduler: Scheduler = Scheduler(self)
 
     def run_startup_tasks(self) -> None:
@@ -74,7 +74,7 @@ class BotManager:
         self.logger.info(error)
         raise RuntimeError(error)
 
-    async def get_rooms_list(self):
+    async def get_rooms_list(self) -> ChatRooms:
         room_list: ChatRooms = ChatRooms()
         for plugin in self.plugin_manager.plugins.values():
             if self.plugin_manager.is_overridden(plugin, "get_rooms_list"):
@@ -116,7 +116,7 @@ class BotManager:
             ):
                 self.logger.info(f"Starting bot plugin {name}...")
 
-                def listener():
+                def listener() -> None:
                     try:
                         asyncio.run(plugin.new_message_callback(message))
                     except Exception as e:

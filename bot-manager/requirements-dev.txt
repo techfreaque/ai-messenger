@@ -1,17 +1,12 @@
-requests
-matrix-nio
-
-flask
-flask_login
-flask_cors
-
-
 # type checking linting etc.
 mypy
 pylint
 flake8
 black 
 isort
+types-colorama 
+types-Flask-Cors
+types-flask
 
 
 # building

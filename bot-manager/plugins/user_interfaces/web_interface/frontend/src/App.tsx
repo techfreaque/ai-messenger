@@ -1,11 +1,11 @@
 import { useEffect } from "react";
 import "./global.css";
 import Pages from "./Routes";
-import { useAuthStore } from "./state/authStore";
+import { useBotStore } from "./state/botStore";
 import { useMatrixClient } from "./state/MatrixClient";
 
 export default function App(): JSX.Element {
-  const { isLoggedIn, checkLogin } = useAuthStore();
+  const { isLoggedIn, checkLogin } = useBotStore();
   const { init, selectedRoom, client, initRoom } = useMatrixClient();
 
   useEffect(() => {
@@ -22,9 +22,5 @@ export default function App(): JSX.Element {
       initRoom(selectedRoom);
     }
   }, [initRoom, selectedRoom]);
-
-  if (isLoggedIn === undefined) {
-    return <p>Loading...</p>;
-  }
   return <Pages />;
 }

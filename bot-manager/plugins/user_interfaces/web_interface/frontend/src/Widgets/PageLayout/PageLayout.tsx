@@ -34,22 +34,22 @@ export function PageLayout({
                 <Breadcrumb>
                   <BreadcrumbList>
                     {breadcrumbs?.map((item, index) => (
-                      <>
+                      <div key={index}>
                         {index !== 0 && (
                           <BreadcrumbSeparator className='hidden md:block' />
                         )}
-                        {index === breadcrumbs.length - 1 ? (
-                          <BreadcrumbItem>
-                            <BreadcrumbPage>{item.label}</BreadcrumbPage>
-                          </BreadcrumbItem>
-                        ) : (
+                        {item.url ? (
                           <BreadcrumbItem className='hidden md:block'>
                             <BreadcrumbLink to={item.url}>
                               {item.label}
                             </BreadcrumbLink>
                           </BreadcrumbItem>
+                        ) : (
+                          <BreadcrumbItem>
+                            <BreadcrumbPage>{item.label}</BreadcrumbPage>
+                          </BreadcrumbItem>
                         )}
-                      </>
+                      </div>
                     ))}
                   </BreadcrumbList>
                 </Breadcrumb>

@@ -17,13 +17,17 @@ class Storage:
     bot_config: Config
     bot_memory: BotMemory
 
-    def __init__(self):
+    def __init__(self, dev_mode: bool):
         self.logger = setup_logger(
             "StorageManager",
             logging.DEBUG,
         )
         current_dir = Path(__file__).parent
-        grandparent_dir = current_dir.parent.parent.parent
+        grandparent_dir = (
+            current_dir.parent.parent.parent
+            if dev_mode
+            else current_dir.parent.parent.parent.parent
+        )
         self.config_path = grandparent_dir / "user/config.json"
         self.memory_path = grandparent_dir / "user/bot_memory.json"
 
@@ -36,7 +40,7 @@ class Storage:
             "bot_memory": self.bot_memory.to_dict(),
         }
 
-    def load_data(self):
+    def load_data(self) -> None:
         """Load both config and memory data."""
         try:
             self.logger.info("Started loading bot config and memory")
@@ -46,7 +50,7 @@ class Storage:
         except Exception as e:
             self.logger.exception(f"Failed to read bot config and memory: {e}")
 
-    def store_data(self):
+    def store_data(self) -> None:
         """Store both config and memory data."""
         try:
             self._store_config()
@@ -54,7 +58,7 @@ class Storage:
         except Exception as e:
             self.logger.exception(f"Failed to store bot config and memory: {e}")
 
-    def _load_config(self):
+    def _load_config(self) -> None:
         """Load configuration from config.json."""
         if not self.config_path.is_file():
             self.logger.warning(
@@ -71,9 +75,9 @@ class Storage:
                     f"Config loaded successfully from {self.config_path}"
                 )
             except json.JSONDecodeError as e:
-                raise ValueError(f"Invalid JSON in config file: {e}")
+                raise ValueError(f"Invalid JSON in config file: {e}") from e
 
-    def _store_config(self):
+    def _store_config(self) -> None:
         """Store configuration to config.json."""
         if self.bot_config is None:
             raise ValueError("bot_config is not loaded and cannot be stored.")
@@ -84,7 +88,7 @@ class Storage:
                 f"Config stored successfully to {self.config_path}"
             )
 
-    def _load_memory(self):
+    def _load_memory(self) -> None:
         """Load bot memory from bot_memory.json."""
         if not self.memory_path.is_file():
             self.logger.warning(
@@ -101,9 +105,9 @@ class Storage:
                     f"Bot memory loaded successfully from {self.memory_path}"
                 )
             except json.JSONDecodeError as e:
-                raise ValueError(f"Invalid JSON in memory file: {e}")
+                raise ValueError(f"Invalid JSON in memory file: {e}") from e
 
-    def _store_memory(self):
+    def _store_memory(self) -> None:
         """Store bot memory to bot_memory.json."""
         if self.bot_memory is None:
             raise ValueError("bot_memory is not loaded and cannot be stored.")

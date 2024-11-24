@@ -51,7 +51,7 @@ class Config:
     matrix_server: str
 
     @staticmethod
-    def logger():
+    def logger() -> logging.Logger:
         return setup_logger(
             "ConfigManager",
             logging.DEBUG,
@@ -97,7 +97,7 @@ class Config:
             restored_data: dict[str, str | dict[str, str]],
             default_data: dict[str, str | dict[str, str]],
             _key: str,
-        ):
+        ) -> str | dict[str, str]:
             return restored_data.get(_key, default_data.get(_key, "error"))
 
         bot_config: BotConfigDict = get_value(data, default_config, "bot")  # type: ignore

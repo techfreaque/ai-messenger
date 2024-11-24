@@ -1,6 +1,4 @@
-"use client";
-
-import React, { useState } from "react";
+import { useState } from "react";
 
 import MessageRoom from "../../Widgets/MessagingComponent";
 import Login from "../../Widgets/User/Login";

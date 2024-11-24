@@ -1,32 +1,42 @@
 import { useMemo } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import { useAuthStore } from "./state/authStore";
+import { useBotStore } from "./state/botStore";
 import ConfigPage from "./pages/config/page";
 import LoginPage from "./pages/login/page";
 import RootLayout from "./pages/layout";
 import LoadingPage from "./pages/loading";
 import NotFoundPage from "./pages/not-found";
 import HomePage from "./pages/page";
+import RoomPage from "./pages/room/page";
+import { PageLayoutNoSidebar } from "./Widgets/PageLayout/PageLayoutNoSidebar";
 
 export default function Pages(): JSX.Element {
-  const { isLoggedIn, routes } = useAuthStore();
+  const { isLoggedIn, routes } = useBotStore();
   return useMemo(() => {
     const pages = {
       home: {
-        path: routes.home,
+        path: routes.frontend.home,
         content: <HomePage />,
         breadcrumbs: [{ label: "Home" }],
       },
       login: {
-        path: routes.login,
-        content: isLoggedIn ? <Navigate to={routes.config} /> : <LoginPage />,
-        breadcrumbs: [{ label: "Home", url: routes.home }, { label: "Login" }],
+        path: routes.frontend.login,
+        content: <LoginPage />,
+        breadcrumbs: [{ label: "Login" }],
+      },
+      room: {
+        path: routes.frontend.room,
+        content: <RoomPage />,
+        breadcrumbs: [
+          { label: "Home", url: routes.frontend.home },
+          { label: "Room" },
+        ],
       },
       config: {
-        path: routes.config,
-        content: isLoggedIn ? <ConfigPage /> : <Navigate to={routes.login} />,
+        path: routes.frontend.config,
+        content: <ConfigPage />,
         breadcrumbs: [
-          { label: "Home", url: routes.home },
+          { label: "Home", url: routes.frontend.home },
           { label: "Bot Settings" },
         ],
       },
@@ -35,48 +45,50 @@ export default function Pages(): JSX.Element {
       <BrowserRouter>
         <Routes>
           {isLoggedIn ? (
-            Object.values(pages).map((page) => {
-              return (
-                <Route
-                  key={page.path}
-                  path={page.path}
-                  element={
-                    <RootLayout breadcrumbs={page.breadcrumbs}>
-                      {page.content}
-                    </RootLayout>
-                  }
-                />
-              );
-            })
+            <>
+              {Object.values(pages).map((page) => {
+                return (
+                  <Route
+                    key={page.path}
+                    path={page.path}
+                    element={
+                      <RootLayout breadcrumbs={page.breadcrumbs}>
+                        {page.content}
+                      </RootLayout>
+                    }
+                  />
+                );
+              })}
+              <Route
+                key='notFound'
+                path='*'
+                element={
+                  <RootLayout>
+                    <NotFoundPage key='notFound' />
+                  </RootLayout>
+                }
+              />
+            </>
           ) : isLoggedIn === undefined ? (
             <Route
               key='isLoading'
               path='*'
               element={
-                <RootLayout>
+                <PageLayoutNoSidebar>
                   <LoadingPage key='isLoading' />
-                </RootLayout>
+                </PageLayoutNoSidebar>
               }
             />
           ) : (
-            <Route
-              path={pages.login.path}
-              element={
-                <RootLayout breadcrumbs={pages.login.breadcrumbs}>
-                  {pages.login.content}
-                </RootLayout>
-              }
-            />
+            <>
+              <Route path={pages.login.path} element={pages.login.content} />
+              <Route
+                key='anyOtherPage'
+                path='*'
+                element={<Navigate to={pages.login.path} />}
+              />
+            </>
           )}
-          <Route
-            key='notFound'
-            path='*'
-            element={
-              <RootLayout>
-                <NotFoundPage key='notFound' />
-              </RootLayout>
-            }
-          />
         </Routes>
       </BrowserRouter>
     );

@@ -4,8 +4,6 @@ import json
 from enum import Enum
 from typing import Literal, Tuple, TypedDict
 
-import requests
-
 from app.lib.messaging.bot_profile import SetUserNameResponse
 from app.lib.messaging.message_received import ReceiveChatMessage
 from app.lib.messaging.message_send import SendChatMessageResponse
@@ -49,14 +47,14 @@ class Plugin(PluginBase):
                         time=self.bot.scheduler.scheduled_wakeup.sleep_time
                     )
                     if self.bot.scheduler.scheduled_wakeup.type
-                    == WakeUpScheduleType.planned
+                    == WakeUpScheduleType.PLANNED
                     else self.bot.profile.no_activity
                 )
             )
         else:
             await self._send_initial_message_to_model()
 
-    async def _send_initial_message_to_model(self):
+    async def _send_initial_message_to_model(self) -> None:
         await self._send_and_respond_to_model(
             message_content=self.bot.profile.get_initial_prompt(
                 bot_name=self.bot.storage.bot_config.bot_name
@@ -66,7 +64,7 @@ class Plugin(PluginBase):
     ##
     ##  commands that are used by the model
     ##
-    async def _help(self):
+    async def _help(self) -> None:
         await self._send_and_respond_to_model(
             message_content=self.bot.profile.get_initial_prompt(
                 self.bot.storage.bot_config.bot_name
@@ -106,7 +104,7 @@ class Plugin(PluginBase):
 
     async def _timeout(self, seconds: int) -> None:
         self.bot.scheduler.scheduled_wakeup = WakeUpSchedule(
-            sleep_time=seconds, type=WakeUpScheduleType.planned
+            sleep_time=seconds, type=WakeUpScheduleType.PLANNED
         )
 
     async def _send_message(
@@ -114,7 +112,7 @@ class Plugin(PluginBase):
         message: str,
         receiver_room_id: str,
         receiver_user_id: str | None = None,
-    ):
+    ) -> None:
         send_response: SendChatMessageResponse = await self.bot.send_message(
             message=message, room_id=receiver_room_id, user_id=receiver_user_id
         )
@@ -126,7 +124,7 @@ class Plugin(PluginBase):
             )
         await self._send_and_respond_to_model(message_content=response)
 
-    async def _request_rooms_list(self):
+    async def _request_rooms_list(self) -> None:
         rooms: ChatRooms = await self.bot.get_rooms_list()
         await self._send_and_respond_to_model(
             message_content=self.bot.profile.get_rooms_list.format(
@@ -136,7 +134,7 @@ class Plugin(PluginBase):
 
     async def _request_room_history(
         self, room_id: str, from_date: str, to_date: str
-    ):
+    ) -> None:
         _from_date = int(
             datetime.datetime.strptime(from_date, "%Y-%m-%d").timestamp()
         )
@@ -152,7 +150,7 @@ class Plugin(PluginBase):
             )
         )
 
-    async def _get_users(self, room_id: str):
+    async def _get_users(self, room_id: str) -> None:
         users = self.bot.get_users(room_id)
         await self._send_and_respond_to_model(
             message_content=self.bot.profile.get_users.format(
@@ -162,7 +160,7 @@ class Plugin(PluginBase):
 
     async def _store_summary(
         self, interval: str, start_time: str, summary: str
-    ):
+    ) -> None:
         _interval = self.parser.parse_interval(interval)
         _start_time = self.parser.parse_date(start_time)
         response: str
@@ -179,14 +177,14 @@ class Plugin(PluginBase):
             response = self.bot.profile.summary_stored
         await self._send_and_respond_to_model(message_content=response)
 
-    async def _store_mind_map(self, text: str):
+    async def _store_mind_map(self, text: str) -> None:
         self.bot.storage.bot_memory.mind_map = text
         self.bot.storage.store_data()
         await self._send_and_respond_to_model(
             message_content=self.bot.profile.mind_map_stored
         )
 
-    async def _get_mind_map(self):
+    async def _get_mind_map(self) -> None:
         response: str
         if self.bot.storage.bot_memory.mind_map:
             response = self.bot.storage.bot_memory.mind_map
@@ -194,7 +192,7 @@ class Plugin(PluginBase):
             response = self.bot.profile.mind_map_empty
         await self._send_and_respond_to_model(message_content=response)
 
-    async def _get_summary(self, interval: str, start_time: str):
+    async def _get_summary(self, interval: str, start_time: str) -> None:
         _interval = self.parser.parse_interval(interval)
         _start_time = self.parser.parse_date(start_time)
         response: str
@@ -248,59 +246,58 @@ class Plugin(PluginBase):
         # TODO store and restore
         self.bot.scheduler.scheduled_wakeup = WakeUpSchedule(
             sleep_time=self.bot.storage.bot_config.bot_timeout,
-            type=WakeUpScheduleType.planned,
+            type=WakeUpScheduleType.PLANNED,
         )
         self.bot.storage.bot_memory.add_message(
             role=role, content=message_content
         )
         self.bot.storage.store_data()
-        headers = {
-            "Content-Type": "application/json",
-            "Authorization": f"Bearer {self.bot.storage.bot_config.model_api_key}",
-        }
-
-        data = {
-            "model": self.bot.storage.bot_config.model_name,
-            "messages": [
-                *self.bot.storage.bot_memory.get_last_n_messages(5),
-                {"role": Roles.SYSTEM.value, "content": message_content},
-            ],
-        }
         return False, None
-        
-        try:
-            response = requests.post(
-                self.bot.storage.bot_config.model_api_url,
-                headers=headers,
-                data=json.dumps(data),
-            )
+        # headers = {
+        #     "Content-Type": "application/json",
+        #     "Authorization": f"Bearer {self.bot.storage.bot_config.model_api_key}",
+        # }
 
-            if response.status_code == 200:
-                model_response: ModelResponseDict = response.json()
-                self.logger.info(f"Model response JSON: {model_response}")
-                message: str = model_response["choices"][0]["message"][
-                    "content"
-                ]
-                self.bot.storage.bot_memory.add_message(
-                    role=Roles.ASSISTANT, content=message
-                )
-                self.bot.storage.store_data()
-                await self.parser.parse_command(
-                    plugin=self,
-                    command=message,
-                    on_command_not_valid=self._on_command_not_valid,
-                )
+        # data = {
+        #     "model": self.bot.storage.bot_config.model_name,
+        #     "messages": [
+        #         *self.bot.storage.bot_memory.get_last_n_messages(5),
+        #         {"role": Roles.SYSTEM.value, "content": message_content},
+        #     ],
+        # }
 
-                return True, message
-            else:
-                self.logger.error(
-                    f"Error response from from the model {self.bot.storage.bot_config.model_api_url} - Error: {response.status_code}, {response.text}"
-                )
-        except Exception as e:
-            self.logger.exception(
-                f"Error getting response from from the model {self.bot.storage.bot_config.model_api_url}: {e}"
-            )
-        return False, None
+        # try:
+        #     response = requests.post(
+        #         self.bot.storage.bot_config.model_api_url,
+        #         headers=headers,
+        #         data=json.dumps(data),
+        #     )
+
+        #     if response.status_code == 200:
+        #         model_response: ModelResponseDict = response.json()
+        #         self.logger.info(f"Model response JSON: {model_response}")
+        #         message: str = model_response["choices"][0]["message"][
+        #             "content"
+        #         ]
+        #         self.bot.storage.bot_memory.add_message(
+        #             role=Roles.ASSISTANT, content=message
+        #         )
+        #         self.bot.storage.store_data()
+        #         await self.parser.parse_command(
+        #             plugin=self,
+        #             command=message,
+        #             on_command_not_valid=self._on_command_not_valid,
+        #         )
+
+        #         return True, message
+        #     self.logger.error(
+        #         f"Error response from from the model {self.bot.storage.bot_config.model_api_url} - Error: {response.status_code}, {response.text}"
+        #     )
+        # except Exception as e:
+        #     self.logger.exception(
+        #         f"Error getting response from from the model {self.bot.storage.bot_config.model_api_url}: {e}"
+        #     )
+        # return False, None
 
     async def _on_command_not_valid(self, error_message: str) -> None:
         await self._send_and_respond_to_model(
